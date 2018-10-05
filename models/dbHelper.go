@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 	"log"
+	"time"
 )
 
 var (
@@ -19,7 +20,7 @@ type database interface {
 	Save(value interface{}) *gorm.DB
 	Delete(value interface{}, where ...interface{}) *gorm.DB
 	First(out interface{}, where ...interface{}) *gorm.DB
-	Automigrate(values interface{}) *gorm.DB
+	Automigrate(values ...interface{}) *gorm.DB
 }
 
 func init()  {
@@ -28,6 +29,12 @@ func init()  {
 		log.Fatal(env)
 	}
 	db = Connect()
-	db.Automigrate(User{},Project{},Task{},Activity{},Assigned{},)
+	db.Automigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{},UserAccount{})
 
+}
+
+
+type BaseModel struct {
+	ID string `gorm:"primary_key;unique"`
+	CreatedAt time.Time
 }
