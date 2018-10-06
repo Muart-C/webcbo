@@ -29,7 +29,7 @@ func init()  {
 		log.Fatal(env)
 	}
 	db = Connect()
-	db.Automigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{},UserAccount{})
+	db.Automigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{})
 
 }
 
