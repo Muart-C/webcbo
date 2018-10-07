@@ -3,10 +3,8 @@ package models
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
-	"os"
 )
 
 var (
@@ -25,25 +23,15 @@ type database interface {
 	AutoMigrate(values ...interface{}) *gorm.DB
 }
 
-func init()  {
-	env := godotenv.Load() //loads env variables from .env
-	if env != nil {
-		log.Fatal(env)
-	}
+func init() {
 	db = Connect()
-	db.AutoMigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{})
+	db.AutoMigrate(User{}, Project{}, Task{}, Activity{}, Assigned{}, Client{}, Employee{}, Hours{}, Milestone{}, MilestoneStatus{}, PreviousActivity{}, PreviousTask{}, ProjectManager{}, ProjectStatus{}, Role{}, Task{}, TaskStatus{}, Team{}, TeamMember{}, ActivityStatus{})
 
 }
 
-
-
 //Database connection
 func Connect() (db *gorm.DB) {
-	DBHOST := os.Getenv("DBHOST")
-	DBNAME := os.Getenv("DBNAME")
-	DBPASS := os.Getenv("DBPASS")
-	DBSSL:= os.Getenv("DBSSLMODE")
-	db, connError := gorm.Open("postgres","host="+DBHOST+"port=5432 dbname="+DBNAME+"dbpass="+DBPASS+"ssl="+DBSSL)
+	db, connError := gorm.Open("mysql", "root:geeky254@tcp(127.0.0.1:3306)/acbo?charset=utf8&parseTime=True")
 	if connError != nil {
 		fmt.Println("DB Connection ERROR")
 		log.Fatal(connError)
