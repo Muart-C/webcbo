@@ -12,8 +12,8 @@ type Project struct {
 	ProjectName             string  `gorm:"not null"`
 	ProjectDescription      string  `gorm:"type:text; not null"`
 	ProjectBudget           float64 `gorm:"null"`
-	ProjectLaborCost        float64 `gorm:"type:decimal(10,2)"`
-	ProjectMaterialCost     float64 `gorm:type:decimal(10,2)"`
+	ProjectLaborCost        float64
+	ProjectMaterialCost     float64
 	ProjectPlannedStartDate time.Time
 	ProjectPlannedEndDate   time.Time
 	ProjectActualStartDate  time.Time

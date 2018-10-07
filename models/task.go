@@ -11,9 +11,9 @@ type Task struct {
 	TaskStatusID         uuid.UUID
 	TaskName             string
 	TaskInstructions     string  `gorm:"type:text"`
-	TaskTotalHours       float64 `gorm:"type:decimal(10,2)"`
-	TaskPlannedBudget    float64 `gorm:type:decimal(10,2)"`
-	TaskActualBudget     float64 `gorm:type:decimal(10,2)"`
+	TaskTotalHours       float64
+	TaskPlannedBudget    float64
+	TaskActualBudget     float64
 	TaskPlannedStartDate time.Time
 	TaskPlannedEndDate   time.Time
 	TaskActualStartDate  time.Time
@@ -40,8 +40,8 @@ type Activity struct {
 	BaseModel
 	ActivityStatusID         uuid.UUID
 	ActivityName             string
-	ActivityPlannedBudget    float64 `gorm:type:decimal(10,2)"`
-	ActivityActualBudget     float64 `gorm:type:decimal(10,2)"`
+	ActivityPlannedBudget    float64
+	ActivityActualBudget     float64
 	ActivityPlannedStartDate time.Time
 	ActivityPlannedEndDate   time.Time
 	ActivityActualStartDate  time.Time
