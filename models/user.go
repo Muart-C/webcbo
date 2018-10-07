@@ -7,6 +7,7 @@ import (
 
 type User struct {
 	BaseModel
+	Refer int
 	UserName string `gorm:"not null"`
 	Email string `gorm:"unique; not null"`
 	FirstName string `gorm:"type:varchar(30)"`
@@ -15,22 +16,28 @@ type User struct {
 
 type Role struct {
 	BaseModel
+	Refer int
 	RoleName string `gorm:"not null"`
 }
 
 type Team struct {
 	BaseModel
+	Refer int
 	TeamName string `gorm:"not null"`
 }
 
 type Employee struct {
 	BaseModel
+	Refer int
 	EmployeeName string `gorm:"varchar(30)"`
 }
 
 type TeamMember struct {
 	BaseModel
 	//Join not implemented role,employee,team
+	Employee Employee `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Team Team `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Role Role `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 type Hours struct {

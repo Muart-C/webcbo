@@ -15,10 +15,12 @@ type Project struct {
 	ProjectActualEndDate time.Time `gorm:"type:timestamp" json:"EndedOn"`
 	ProjectTotalHours float64 `gorm:"type:decimal(10,2)"`
 	//Implement Join one to one between project status and project
+	ProjectStatus ProjectStatus `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 type ProjectStatus struct {
 	BaseModel
+	Refer int
 	ProjectStatus string `gorm:"type:varchar(12)"`
 	ProjectIsActive bool
 }
@@ -31,9 +33,11 @@ type Milestone struct {
 	MilestoneDueDate time.Time `gorm:"type:timestamp" json:"DueOn"`
 	MilestoneAchievedDate time.Time `gorm:"type:timestamp" json:"AchievedOn"`
 	//Implement Join one to one between milestone status and milestone
+	MilestoneStatus MilestoneStatus `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 type MilestoneStatus struct {
 	BaseModel
+	Refer int
 	MilestoneStatus string `gorm:"type:varchar(12)"`
 }

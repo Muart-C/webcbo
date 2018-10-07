@@ -1,9 +1,12 @@
 package models
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 	"log"
+	"os"
 	"time"
 )
 
@@ -20,7 +23,7 @@ type database interface {
 	Save(value interface{}) *gorm.DB
 	Delete(value interface{}, where ...interface{}) *gorm.DB
 	First(out interface{}, where ...interface{}) *gorm.DB
-	Automigrate(values ...interface{}) *gorm.DB
+	AutoMigrate(values ...interface{}) *gorm.DB
 }
 
 func init()  {
@@ -29,12 +32,29 @@ func init()  {
 		log.Fatal(env)
 	}
 	db = Connect()
-	db.Automigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{})
+	db.AutoMigrate(User{},Project{},Task{},Activity{},Assigned{},Client{},Employee{},Hours{},Milestone{},MilestoneStatus{},PreviousActivity{},PreviousTask{},ProjectManager{},ProjectStatus{},Role{},Task{},TaskStatus{},Team{},TeamMember{})
 
 }
+
 
 
 type BaseModel struct {
 	ID string `gorm:"primary_key;unique"`
 	CreatedAt time.Time
+}
+
+
+//Database connection
+
+func Connect() (db *gorm.DB) {
+	DBHOST := os.Getenv("DBHOST")
+	DBNAME := os.Getenv("DBNAME")
+	DBPASS := os.Getenv("DBPASS")
+	DBSSL:= os.Getenv("DBSSLMODE")
+	db, connerror := gorm.Open("postgres","host="+DBHOST+"port=5432 dbname="+DBNAME+"dbpass="+DBPASS+"ssl="+DBSSL)
+	if connerror != nil {
+		fmt.Println("DB Connection ERROR")
+		log.Fatal(connerror)
+	}
+	return db
 }
