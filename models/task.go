@@ -1,10 +1,14 @@
 package models
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type Task struct {
-	BaseModel
-	Refer int
+	gorm.Model
+	Refer uint
+	TaskStatusID uint
 	TaskName string
 	TaskInstructions string `gorm:"type:text"`
 	TaskTotalHours float64 `gorm:"type:decimal(10,2)"`
@@ -14,25 +18,27 @@ type Task struct {
 	TaskPlannedEndDate time.Time `gorm:"type:timestamp" json:"EndedOn"`
 	TaskActualStartDate time.Time `gorm:"type:timestamp" json:"StartedOn"`
 	TaskActualEndDate time.Time `gorm:"type:timestamp" json:"EndedOn"`
-	//Join one to one between task status and task
-	TaskStatus TaskStatus `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	PreviousTask []PreviousTask `gorm:"foreignkey:PreviousTaskID;association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+
 }
 
 type TaskStatus struct {
-	BaseModel
-	Refer int
+	gorm.Model
+	Refer uint
 	TaskStatus string `gorm:"type:varchar(40)"`
 	TaskPriority string `gorm:"type:varchar(10)"`
+	Task Task `gorm:"foreignkey:TaskStatusID;association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 type PreviousTask struct {
-	BaseModel
-	Task Task `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	gorm.Model
+	PreviousTask uint
 }
 
 type Activity struct {
-	BaseModel
-	Refer int
+	gorm.Model
+	Refer uint
+	ActivityStatusID uint
 	ActivityName string
 	ActivityPlannedBudget float64 `gorm:type:decimal(10,2)"`
 	ActivityActualBudget float64 `gorm:type:decimal(10,2)"`
@@ -40,21 +46,21 @@ type Activity struct {
 	ActivityPlannedEndDate time.Time `gorm:"type:timestamp" json:"EndedOn"`
 	ActivityActualStartDate time.Time `gorm:"type:timestamp" json:"StartedOn"`
 	ActivityActualEndDate time.Time `gorm:"type:timestamp" json:"EndedOn"`
-	//Join one to one between activity status and activity
-	ActivityStatus ActivityStatus `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	PreviousActivity []PreviousActivity `gorm:"foreignkey:PreviousActivityID;association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Assigned []Assigned `gorm:"foreignkey:AssignedActivityID;association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 type ActivityStatus struct {
-	BaseModel
-	Refer int
+	gorm.Model
+	Refer uint
 	ActivityStatus string `gorm:"type:varchar(12)"`
-	Activity Activity `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Activity Activity `gorm:"foreignkey:ActivityStatusID;association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 
 type PreviousActivity struct {
-	BaseModel
-	Activity Activity `gorm:"association_foreignkey:Refer;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	gorm.Model
+	PreviousActivityID uint
 }
 
 

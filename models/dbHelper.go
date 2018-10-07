@@ -7,7 +7,6 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
-	"time"
 )
 
 var (
@@ -38,23 +37,16 @@ func init()  {
 
 
 
-type BaseModel struct {
-	ID string `gorm:"primary_key;unique"`
-	CreatedAt time.Time
-}
-
-
 //Database connection
-
 func Connect() (db *gorm.DB) {
 	DBHOST := os.Getenv("DBHOST")
 	DBNAME := os.Getenv("DBNAME")
 	DBPASS := os.Getenv("DBPASS")
 	DBSSL:= os.Getenv("DBSSLMODE")
-	db, connerror := gorm.Open("postgres","host="+DBHOST+"port=5432 dbname="+DBNAME+"dbpass="+DBPASS+"ssl="+DBSSL)
-	if connerror != nil {
+	db, connError := gorm.Open("postgres","host="+DBHOST+"port=5432 dbname="+DBNAME+"dbpass="+DBPASS+"ssl="+DBSSL)
+	if connError != nil {
 		fmt.Println("DB Connection ERROR")
-		log.Fatal(connerror)
+		log.Fatal(connError)
 	}
 	return db
 }
