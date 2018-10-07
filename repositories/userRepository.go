@@ -6,7 +6,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-//CreateUser
+//CreateUser Method definition
 func CreateUser(userName, email, firstName, lastName string) (*models.User, error) {
 	var user models.User
 	user.ID = uuid.Must(uuid.NewV4())
@@ -24,7 +24,7 @@ func CreateUser(userName, email, firstName, lastName string) (*models.User, erro
 	return nil, errors.New("Trouble adding a new user")
 }
 
-//FetchUsers
+//FetchUsers Method definition
 func FetchUsers() (*[]models.User, error) {
 	var users []models.User
 	models.DB.Find(&users)
@@ -34,7 +34,7 @@ func FetchUsers() (*[]models.User, error) {
 	return nil, errors.New("You have no user records")
 }
 
-//FetUser
+//FetchUser Method definition
 func FetchUser(id uuid.UUID) (*models.User, error) {
 	var user models.User
 	models.DB.Where("id= ?", id).Find(&user)
@@ -44,7 +44,7 @@ func FetchUser(id uuid.UUID) (*models.User, error) {
 	return nil, errors.New("No such user exist")
 }
 
-//UpdateUser
+//UpdateUser Method definition
 func UpdateUser(userName, email, firstName, lastName string, id uuid.UUID) (*models.User, error) {
 	user, err := FetchUser(id)
 	if err != nil {
@@ -58,7 +58,7 @@ func UpdateUser(userName, email, firstName, lastName string, id uuid.UUID) (*mod
 	return &models.User{}, nil
 }
 
-//DeleteUser
+//DeleteUser Method definition
 func DeleteUser(id uuid.UUID) error {
 	user, err := FetchUser(id)
 	if err != nil {
@@ -68,7 +68,7 @@ func DeleteUser(id uuid.UUID) error {
 	return nil
 }
 
-//AddRole
+//AddRole Method definition
 func AddRole(roleName string) (*models.Role, error) {
 	var role models.Role
 	role.ID = uuid.Must(uuid.NewV4())

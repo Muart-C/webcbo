@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//Project Model definition
 type Project struct {
 	BaseModel
 	ProjectStatusID         uuid.UUID
@@ -21,6 +22,7 @@ type Project struct {
 	ProjectManager          []ProjectManager `gorm:"foreignkey:ProjectManagerProjectID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
+//ProjectStatus Model definition
 type ProjectStatus struct {
 	BaseModel
 	ProjectStatus   string `gorm:"type:varchar(12)"`
@@ -28,6 +30,7 @@ type ProjectStatus struct {
 	Project         Project `gorm:"foreignkey:ProjectStatusID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
+//Milestone Model definition
 type Milestone struct {
 	BaseModel
 	MilestoneStatusID     uuid.UUID
@@ -38,6 +41,7 @@ type Milestone struct {
 	MilestoneAchievedDate time.Time
 }
 
+//MilestoneStatus Model definition
 type MilestoneStatus struct {
 	BaseModel
 	MilestoneStatus string    `gorm:"type:varchar(12)"`

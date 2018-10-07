@@ -3,18 +3,18 @@ package models
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" //invoke mysql driver
 	"github.com/satori/go.uuid"
 	"log"
 	"time"
 )
 
+//DB Object
 var (
 	DB Database
 )
 
-//interface of functions to be used
-
+//Database interface method definition
 type Database interface {
 	Create(interface{}) *gorm.DB
 	Find(out interface{}, where ...interface{}) *gorm.DB
@@ -26,12 +26,13 @@ type Database interface {
 }
 
 func init() {
+
 	DB = Connect()
 	DB.AutoMigrate(User{}, Project{}, Task{}, Activity{}, Assigned{}, Client{}, Employee{}, Hours{}, Milestone{}, MilestoneStatus{}, PreviousActivity{}, PreviousTask{}, ProjectManager{}, ProjectStatus{}, Role{}, Task{}, TaskStatus{}, Team{}, TeamMember{}, ActivityStatus{})
 
 }
 
-//Database connection
+//Connect to the db
 func Connect() (db *gorm.DB) {
 	db, connError := gorm.Open("mysql", "root:geeky254@tcp(127.0.0.1:3306)/acbo?charset=utf8&parseTime=True")
 	if connError != nil {
@@ -41,7 +42,7 @@ func Connect() (db *gorm.DB) {
 	return db
 }
 
-// base model
+//BaseModel model definition
 type BaseModel struct {
 	ID        uuid.UUID `gorm:"primary_key;unique"`
 	CreatedAt time.Time
