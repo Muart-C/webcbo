@@ -6,7 +6,7 @@ import (
 )
 
 //CreateUser Method definition
-func CreateUser(userName, email, firstName, lastName string) (*models.User, error) {
+func CreateUserRepository(userName, email, firstName, lastName string) (*models.User, error) {
 	var user models.User
 	user.UserName = userName
 	user.Email = email
@@ -16,14 +16,14 @@ func CreateUser(userName, email, firstName, lastName string) (*models.User, erro
 
 	result := models.DB.Create(&user)
 
-	if result != nil{
+	if result != nil {
 		return &models.User{}, nil
 	}
 	return nil, errors.New("Trouble adding a new user")
 }
 
 //FetchUsers Method definition
-func FetchUsers() (*[]models.User, error) {
+func FetchUsersRepository() (*[]models.User, error) {
 	var users []models.User
 	models.DB.Find(&users)
 	if len(users) > 0 {
@@ -33,7 +33,7 @@ func FetchUsers() (*[]models.User, error) {
 }
 
 //FetchUser Method definition
-func FetchUser(id int) (*models.User, error) {
+func FetchUserRepository(id int) (*models.User, error) {
 	var user models.User
 	models.DB.Where("id= ?", id).Find(&user)
 	if user.ID == id {
@@ -43,22 +43,23 @@ func FetchUser(id int) (*models.User, error) {
 }
 
 //UpdateUser Method definition
-func UpdateUser(userName, email, firstName, lastName string, id int) (*models.User, error) {
-	user, err := FetchUser(id)
-	if err != nil {
-		return nil, errors.New("An error occured while updating the user details")
+func UpdateUserRepository(userName, email, firstName, lastName string, id int) (*models.User, error) {
+	var user models.User
+	//user, err := FetchUserRepository(id)
+	models.DB.Where("id= ?", id).Find(&user)
+	if user.ID == id {
+		user.UserName = userName
+		user.Email = email
+		user.FirstName = firstName
+		user.LastName = lastName
+		models.DB.Save(&user)
 	}
-	user.UserName = userName
-	user.Email = email
-	user.FirstName = firstName
-	user.LastName = lastName
-	models.DB.Save(&user)
 	return &models.User{}, nil
 }
 
 //DeleteUser Method definition
-func DeleteUser(id int) error {
-	user, err := FetchUser(id)
+func DeleteUserRepository(id int) error { //RUN TESTS
+	user, err := r.FetchUserRepository(id)
 	if err != nil {
 		return errors.New("An error occured while fetching the user")
 	}
@@ -66,24 +67,23 @@ func DeleteUser(id int) error {
 	return nil
 }
 
-
 //CreateEmployee method definition
-func CreateEmployee(user models.User, employeeName string)(*models.Employee, error)  {
+func CreateEmployeeRepository(user models.User, employeeName string) (*models.Employee, error) {
 	var employee models.Employee
 	employee.EmployeeName = employeeName
 	employee.EmployeeUserID = user.ID
 	result := models.DB.Create(&employee)
 
-	if  result == nil{
+	if result == nil {
 		return nil, errors.New("Error adding Employee")
 	}
 	return &models.Employee{}, nil
 }
 
 //FetchEmployee method definition
-func FetchEmployee(id int) (*models.Employee, error)  {
+func FetchEmployeeRepository(id int) (*models.Employee, error) {
 	var employee models.Employee
-	models.DB.Where("id=?",id).Find(&employee)
+	models.DB.Where("id=?", id).Find(&employee)
 	if employee.ID == id {
 		return &models.Employee{}, nil
 	}
@@ -91,27 +91,41 @@ func FetchEmployee(id int) (*models.Employee, error)  {
 }
 
 //FetchEmployees method definition
-func FetchEmployees()(*models.Employee,error)  {
+func FetchEmployeesRepository() (*models.Employee, error) {
 	var employees []models.Employee
 	models.DB.Find(&employees)
-	if len(employees)>0 {
+	if len(employees) > 0 {
 		return &models.Employee{}, nil
 	}
 	return nil, errors.New("No employees were found")
 }
 
 //UpdateEmployee method definition
-func UpdateEmployee(employee1 string, id int)(*models.Employee, error)  {
-	employee,err := FetchEmployee(id)
-	if err != nil {
-		return nil, errors.New("Error retrieving the employee")
+func UpdateEmployeeRepository(employee1 string, id int) (*models.Employee, error) {
+	var employee models.Employee
+	//employee,err := FetchEmployeeRepository(id)
+	models.DB.Where("id=?", id).Find(&employee)
+	if employee.ID == id {
+
+		employee.EmployeeName = employee1
+		models.DB.Save(employee)
+
 	}
-	employee.EmployeeName = employee1
-	models.DB.Save(&employee)
-	////////
+	return &models.Employee{}, nil
 }
+
+//DeleteEmployee method definition
+func DeleteEmployeeRepository(id int) error {
+	employee, err := r.FetchEmployeeRepository(id) //RUN TESTS
+	if err != nil {
+		return errors.New("An error occured while deleting an employee")
+	}
+	models.DB.Delete(&employee)
+	return nil
+}
+
 //CreateRole Method definition
-func CreateRole(roleName string) (*models.Role, error) {
+func CreateRoleRepository(roleName string) (*models.Role, error) {
 	var role models.Role
 	role.RoleName = roleName
 
@@ -124,9 +138,9 @@ func CreateRole(roleName string) (*models.Role, error) {
 }
 
 //FetchRole method definition
-func FetchRole(id int) (*models.Role, error) {
+func FetchRoleRepository(id int) (*models.Role, error) {
 	var role models.Role
-	models.DB.Where("id=?",id).Find(&role)
+	models.DB.Where("id=?", id).Find(&role)
 
 	if role.ID == id {
 		return &models.Role{}, nil
@@ -135,7 +149,7 @@ func FetchRole(id int) (*models.Role, error) {
 }
 
 //FetchRoles method definition
-func FetchRoles()(*models.Role,error)  {
+func FetchRolesRepository() (*models.Role, error) {
 	var roles []models.Role
 	models.DB.Find(&roles)
 	if len(roles) > 0 {
@@ -145,8 +159,8 @@ func FetchRoles()(*models.Role,error)  {
 }
 
 //UpdateRole method definition
-func UpdateRole(role1 string, id int)(*models.Role, error)  {
-	role, err := FetchRole(id)
+func UpdateRoleRepository(role1 string, id int) (*models.Role, error) {
+	role, err := FetchRoleRepository(id)
 	if err != nil {
 		return nil, errors.New("Role with that id not found")
 	}
@@ -157,12 +171,11 @@ func UpdateRole(role1 string, id int)(*models.Role, error)  {
 }
 
 //DeleteRole method definition
-func DeleteRole(id int) error {
-	role, err := FetchRole(id)
+func DeleteRoleRepository(id int) error {
+	role, err := FetchRoleRepository(id)
 	if err != nil {
-		return  errors.New("Role with that id not found")
+		return errors.New("Role with that id not found")
 	}
 	models.DB.Delete(&role)
 	return nil
 }
-
