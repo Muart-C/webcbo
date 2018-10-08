@@ -66,13 +66,57 @@ func DeleteUser(id int) error {
 	return nil
 }
 
+
+//CreateEmployee method definition
+func CreateEmployee(user models.User, employeeName string)(*models.Employee, error)  {
+	var employee models.Employee
+	employee.EmployeeName = employeeName
+	employee.EmployeeUserID = user.ID
+	result := models.DB.Create(&employee)
+
+	if  result == nil{
+		return nil, errors.New("Error adding Employee")
+	}
+	return &models.Employee{}, nil
+}
+
+//FetchEmployee method definition
+func FetchEmployee(id int) (*models.Employee, error)  {
+	var employee models.Employee
+	models.DB.Where("id=?",id).Find(&employee)
+	if employee.ID == id {
+		return &models.Employee{}, nil
+	}
+	return nil, errors.New("Employee with that id not found")
+}
+
+//FetchEmployees method definition
+func FetchEmployees()(*models.Employee,error)  {
+	var employees []models.Employee
+	models.DB.Find(&employees)
+	if len(employees)>0 {
+		return &models.Employee{}, nil
+	}
+	return nil, errors.New("No employees were found")
+}
+
+//UpdateEmployee method definition
+func UpdateEmployee(employee1 string, id int)(*models.Employee, error)  {
+	employee,err := FetchEmployee(id)
+	if err != nil {
+		return nil, errors.New("Error retrieving the employee")
+	}
+	employee.EmployeeName = employee1
+	models.DB.Save(&employee)
+	////////
+}
 //CreateRole Method definition
 func CreateRole(roleName string) (*models.Role, error) {
 	var role models.Role
 	role.RoleName = roleName
 
 	result := models.DB.Create(&role)
-	if result != nil {
+	if result == nil {
 		return nil, errors.New("Error adding a new role")
 	}
 	return &models.Role{}, nil
@@ -112,12 +156,13 @@ func UpdateRole(role1 string, id int)(*models.Role, error)  {
 	return &models.Role{}, nil
 }
 
-//DeleteRole
+//DeleteRole method definition
 func DeleteRole(id int) error {
 	role, err := FetchRole(id)
 	if err != nil {
 		return  errors.New("Role with that id not found")
 	}
 	models.DB.Delete(&role)
+	return nil
 }
 

@@ -2,10 +2,8 @@ package models
 
 import (
 	"github.com/golang/protobuf/ptypes/timestamp"
-	"github.com/satori/go.uuid"
 	"google.golang.org/genproto/googleapis/type/date"
 )
-
 
 //User model
 type User struct {
@@ -36,26 +34,25 @@ type Team struct {
 //Employee model
 type Employee struct {
 	BaseModel
-	EmployeeUserID uuid.UUID
+	EmployeeUserID int
 	EmployeeName   string       `gorm:"varchar(30)"`
 	Assigned       []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	TeamMember     []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Hours          Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
-
 //TeamMember model
 type TeamMember struct {
 	BaseModel
-	TeamMemberTeamID     uuid.UUID
-	TeamMemberEmployeeID uuid.UUID
-	TeamMemberRoleID     uuid.UUID
+	TeamMemberTeamID     int
+	TeamMemberEmployeeID int
+	TeamMemberRoleID     int
 }
 
 //Hours model
 type Hours struct {
 	BaseModel
-	HoursEmployeeID uuid.UUID
+	HoursEmployeeID int
 	AssignedOn      date.Date
 	AssignedAt      timestamp.Timestamp
 	HoursCompleted  float64 `gorm:"type:decimal(10,2)"`
@@ -79,16 +76,16 @@ type Client struct {
 type ProjectManager struct {
 	BaseModel
 	//Join project_id,project_status_id,user_id,client_id
-	ProjectManagerUserID    uuid.UUID
-	ProjectManagerProjectID uuid.UUID
-	ProjectManagerClientID  uuid.UUID
+	ProjectManagerUserID    int
+	ProjectManagerProjectID int
+	ProjectManagerClientID  int
 }
 
 //Assigned model
 type Assigned struct {
 	BaseModel
 	//Join activity,employee and role(All have 1 to many relationship)
-	AssignedActivityID uuid.UUID
-	AssignedEmployeeID uuid.UUID
-	AssignedRoleID     uuid.UUID
+	AssignedActivityID int
+	AssignedEmployeeID int
+	AssignedRoleID     int
 }

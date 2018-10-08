@@ -8,7 +8,7 @@ import (
 //Project Model definition
 type Project struct {
 	BaseModel
-	ProjectStatusID         uuid.UUID
+	ProjectStatusID         int
 	ProjectName             string  `gorm:"not null"`
 	ProjectDescription      string  `gorm:"type:text; not null"`
 	ProjectBudget           float64 `gorm:"null"`
@@ -33,7 +33,7 @@ type ProjectStatus struct {
 //Milestone Model definition
 type Milestone struct {
 	BaseModel
-	MilestoneStatusID     uuid.UUID
+	MilestoneStatusID     int
 	MilestoneName         string  `gorm:"not null"`
 	MilestoneDeliverables string  `gorm:"type:text; not null"`
 	MilestoneTotalHours   float64 `gorm:"type:decimal(10,2)"`

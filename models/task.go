@@ -8,9 +8,9 @@ import (
 //Task model
 type Task struct {
 	BaseModel
-	TaskStatusID         uuid.UUID
+	TaskStatusID         int
 	TaskName             string
-	TaskInstructions     string  `gorm:"type:text"`
+	TaskInstructions     string `gorm:"type:text"`
 	TaskTotalHours       float64
 	TaskPlannedBudget    float64
 	TaskActualBudget     float64
@@ -32,13 +32,13 @@ type TaskStatus struct {
 //PreviousTask  model
 type PreviousTask struct {
 	BaseModel
-	PreviousTaskID uuid.UUID
+	PreviousTaskID int
 }
 
 //Activity model
 type Activity struct {
 	BaseModel
-	ActivityStatusID         uuid.UUID
+	ActivityStatusID         int
 	ActivityName             string
 	ActivityPlannedBudget    float64
 	ActivityActualBudget     float64
@@ -60,5 +60,5 @@ type ActivityStatus struct {
 //PreviousActivity model
 type PreviousActivity struct {
 	BaseModel
-	PreviousActivityID uuid.UUID
+	PreviousActivityID int
 }
