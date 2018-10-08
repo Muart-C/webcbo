@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" //invoke mysql driver
-	"github.com/satori/go.uuid"
 	"log"
 	"time"
 )
@@ -44,7 +43,7 @@ func Connect() (db *gorm.DB) {
 
 //BaseModel model definition
 type BaseModel struct {
-	ID        uuid.UUID `gorm:"primary_key;unique"`
+	ID        int `gorm:"primary_key;unique"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
