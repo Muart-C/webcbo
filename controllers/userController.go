@@ -15,7 +15,14 @@ func CreateUserController(w http.ResponseWriter, r *http.Request)  {
 		RespondWithError(w,500,"Invalid user data")
 		return
 	}
-
 	//save a new user
-	repositories.CreateEmployeeRepository(userData.UserName,)
-}
+	repositories.CreateUserRepository(&userData)
+
+	resp, err := json.Marshal(userData)
+	if err != nil {
+		RespondWithError(w,500,"An unexpected error occured")
+	}
+	w.Header().Set("Content-Type","application/json")
+	w.WriteHeader(http.StatusCreated)
+	w.Write(resp)
+}//Test for working

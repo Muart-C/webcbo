@@ -6,13 +6,7 @@ import (
 )
 
 //CreateUser Method definition
-func CreateUserRepository(userName, email, firstName, lastName string) (*models.User, error) {
-	var user models.User
-	user.UserName = userName
-	user.Email = email
-	user.FirstName = firstName
-	user.LastName = lastName
-	//import db instance to continue
+func CreateUserRepository(user *models.User) (*models.User, error) {
 
 	result := models.DB.Create(&user)
 
@@ -59,7 +53,7 @@ func UpdateUserRepository(userName, email, firstName, lastName string, id int) (
 
 //DeleteUser Method definition
 func DeleteUserRepository(id int) error { //RUN TESTS
-	user, err := r.FetchUserRepository(id)
+	user, err := FetchUserRepository(id)
 	if err != nil {
 		return errors.New("An error occured while fetching the user")
 	}
@@ -116,7 +110,7 @@ func UpdateEmployeeRepository(employee1 string, id int) (*models.Employee, error
 
 //DeleteEmployee method definition
 func DeleteEmployeeRepository(id int) error {
-	employee, err := r.FetchEmployeeRepository(id) //RUN TESTS
+	employee, err := FetchEmployeeRepository(id) //RUN TESTS
 	if err != nil {
 		return errors.New("An error occured while deleting an employee")
 	}
