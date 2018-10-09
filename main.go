@@ -2,8 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/Muart-C/webcbo/routes"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("Main running ac")
+
+	router := routes.InitializeRoutes()
+
+	fmt.Println("server is running")
+	http.ListenAndServe(":8000",router)
+
 }
