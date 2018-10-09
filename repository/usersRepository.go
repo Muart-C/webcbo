@@ -66,9 +66,9 @@ func DeleteUser(id int) error { //RUN TESTS
 }
 
 //CreateEmployee method definition
-func CreateEmployee(user models.User, employeeName string) (*models.Employee, error) {
+func CreateEmployee(user models.User, employeeProfession string) (*models.Employee, error) {
 	var employee models.Employee
-	employee.EmployeeName = employeeName
+	employee.EmployeeProfession = employeeProfession
 	employee.EmployeeUserID = user.ID
 	result := models.DB.Create(&employee)
 
@@ -99,13 +99,13 @@ func FetchEmployees() (*[]models.Employee, error) {
 }
 
 //UpdateEmployee method definition
-func UpdateEmployee(employee1 string, id int) (*models.Employee, error) {
+func UpdateEmployee(employeeProfession string, id int) (*models.Employee, error) {
 	var employee models.Employee
 	//employee,err := FetchEmployee(id)
 	models.DB.Where("id=?", id).Find(&employee)
 	if employee.ID == id {
 
-		employee.EmployeeName = employee1
+		employee.EmployeeProfession = employeeProfession
 		models.DB.Save(employee)
 
 	}

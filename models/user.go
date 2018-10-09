@@ -1,9 +1,7 @@
 package models
 
 import (
-
-	"github.com/golang/protobuf/ptypes/timestamp"
-	"google.golang.org/genproto/googleapis/type/date"
+	"time"
 )
 
 //User model
@@ -36,7 +34,7 @@ type Team struct {
 type Employee struct {
 	BaseModel
 	EmployeeUserID int
-	EmployeeName   string       `gorm:"varchar(30)"`
+	EmployeeProfession   string       `gorm:"varchar(30)"`
 	Assigned       []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	TeamMember     []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Hours          Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
@@ -54,8 +52,8 @@ type TeamMember struct {
 type Hours struct {
 	BaseModel
 	HoursEmployeeID int
-	AssignedOn      date.Date
-	AssignedAt      timestamp.Timestamp
+	AssignedOn      time.Time
+	AssignedAt      time.Time
 	HoursCompleted  float64 `gorm:"type:decimal(10,2)"`
 	WorkCompleted   string  `gorm:"type:text"`
 }
