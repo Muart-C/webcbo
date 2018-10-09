@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/Muart-C/webcbo/models"
+	"github.com/Muart-C/webcbo/repository"
 	"net/http"
 )
 
@@ -18,7 +19,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request)  {
 	}
 	//save a new user
 
-	response,err:=models.CreateUser(user.UserName,user.Email,user.LastName,user.FirstName)
+	response,err:=repository.CreateUser(user.UserName,user.Email,user.LastName,user.FirstName)
 
 	if err != nil {
 		RespondWithError(w,500,"An unexpected error occured")
