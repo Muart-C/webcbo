@@ -122,6 +122,68 @@ func DeleteEmployee(id int) error {
 	return nil
 }
 
+//CreateEmployeeHours method definition
+func CreateEmployeeHours(employee models.Employee, assignedOn, assignedAt string, hoursCompleted float64, workCompleted string) (*models.Hours, error) {
+	var employeeHours models.Hours
+	employeeHours.AssignedAt = assignedAt
+	employeeHours.AssignedOn = assignedOn
+	employeeHours.HoursEmployeeID = employee.ID
+	employeeHours.HoursCompleted = hoursCompleted
+	employeeHours.WorkCompleted = workCompleted
+	result := models.DB.Create(&employeeHours)
+
+	if result == nil {
+		return nil, errors.New("Error adding employeeHours")
+	}
+	return &employeeHours, nil
+}
+
+//FetchEmployeeHours method definition
+func FetchEmployeeHours(id int) (*models.Hours, error) {
+	var employeeHours models.Hours
+	models.DB.Where("id=?", id).Find(&employeeHours)
+	if employeeHours.ID == id {
+		return &employeeHours, nil
+	}
+	return nil, errors.New("employeeHours with that id not found")
+}
+
+//FetchEmployeeHours method definition
+func FetchEmployeesHours() (*[]models.Hours, error) {
+	var employeeHours []models.Hours
+	models.DB.Find(&employeeHours)
+	if len(employeeHours) > 0 {
+		return &employeeHours, nil
+	}
+	return nil, errors.New("No employeeHourss were found")
+}
+
+//UpdateEmployeeHours method definition
+func UpdateEmployeeHours(assignedOn, assignedAt string, hoursCompleted float64, workCompleted string, id int) (*models.Hours, error) {
+	var employeeHours models.Hours
+	//employeeHours,err := FetchemployeeHours(id)
+	models.DB.Where("id=?", id).Find(&employeeHours)
+	if employeeHours.ID == id {
+		employeeHours.AssignedAt = assignedAt
+		employeeHours.AssignedOn = assignedOn
+		employeeHours.HoursCompleted = hoursCompleted
+		employeeHours.WorkCompleted = workCompleted
+		models.DB.Save(employeeHours)
+
+	}
+	return &employeeHours, nil
+}
+
+//DeleteEmployeeHours method definition
+func DeleteEmployeeHours(id int) error {
+	employeeHours, err := FetchEmployeeHours(id) //RUN TESTS
+	if err != nil {
+		return errors.New("An error occured while deleting an employeeHours")
+	}
+	models.DB.Delete(&employeeHours)
+	return nil
+}
+
 //CreateRole Method definition
 func CreateRole(roleName string) (*models.Role, error) {
 	var role models.Role
@@ -175,5 +237,127 @@ func DeleteRole(id int) error {
 		return errors.New("Role with that id not found")
 	}
 	models.DB.Delete(&role)
+	return nil
+}
+
+//CreateTeam Method definition
+func CreateTeam(teamName string) (*models.Team, error) {
+	var team models.Team
+	team.TeamName = teamName
+
+	result := models.DB.Create(&team)
+	if result == nil {
+		return nil, errors.New("Error adding a new Team")
+	}
+	return &team, nil
+
+}
+
+//FetchTeam method definition
+func FetchTeam(id int) (*models.Team, error) {
+	var team models.Team
+	models.DB.Where("id=?", id).Find(&team)
+
+	if team.ID == id {
+		return &team, nil
+	}
+	return nil, errors.New("Team not found")
+}
+
+//FetchTeams method definition
+func FetchTeams() (*[]models.Team, error) {
+	var teams []models.Team
+	models.DB.Find(&teams)
+	if len(teams) > 0 {
+		return &teams, nil
+	}
+	return nil, errors.New("No Teams found")
+}
+
+//UpdateTeam method definition
+func UpdateTeam(team1 string, id int) (*models.Team, error) {
+	team, err := FetchTeam(id)
+	if err != nil {
+		return nil, errors.New("Team with that id not found")
+	}
+	team.TeamName = team1
+	models.DB.Save(*team)
+
+	return *&team, nil
+}
+
+//DeleteTeam method definition
+func DeleteTeam(id int) error {
+	team, err := FetchTeam(id)
+	if err != nil {
+		return errors.New("Team with that id not found")
+	}
+	models.DB.Delete(&team)
+	return nil
+}
+
+//CreateClient Method definition
+func CreateClient(clientName, clientDescription, clientCounty, clientIndustrySector, clientCity, clientPhone, clientZip string) (*models.Client, error) {
+	var client models.Client
+	client.ClientName = clientName
+	client.ClientDescription = clientDescription
+	client.ClientCounty = clientCounty
+	client.ClientIndustrySector = clientIndustrySector
+	client.ClientCity = clientCity
+	client.ClientPhone = clientPhone
+	client.ClientZip = clientZip
+	result := models.DB.Create(&client)
+
+	if result != nil {
+		return &client, nil
+	}
+	return nil, errors.New("Trouble adding a new client")
+}
+
+//FetchClients Method definition
+func FetchClients() (*[]models.Client, error) {
+	var clients []models.Client
+	models.DB.Find(&clients)
+	if len(clients) > 0 {
+		return &clients, nil
+	}
+	return nil, errors.New("You have no client records")
+}
+
+//FetchClient Method definition
+func FetchClient(id int) (*models.Client, error) {
+	var client models.Client
+	models.DB.Where("id= ?", id).Find(&client)
+	if client.ID == id {
+		return &client, nil
+	}
+	return nil, errors.New("No such client exist")
+}
+
+//UpdateClient Method definition
+func UpdateClient(clientName, clientDescription, clientCounty, clientIndustrySector, clientCity, clientPhone, clientZip string, id int) (*models.Client, error) {
+	var client models.Client
+	//client, err := FetchClient(id)
+	models.DB.Where("id= ?", id).Find(&client)
+	if client.ID == id {
+		client.ClientName = clientName
+		client.ClientDescription = clientDescription
+		client.ClientCounty = clientCounty
+		client.ClientIndustrySector = clientIndustrySector
+		client.ClientCity = clientCity
+		client.ClientPhone = clientPhone
+		client.ClientZip = clientZip
+		models.DB.Save(&client)
+	}
+	return &client, nil
+}
+
+//DeleteClient Method definition
+func DeleteClient(id int) error { //RUN TESTS
+	client, err := FetchClient(id)
+	if err != nil {
+		return errors.New("An error occured while fetching the client")
+	}
+	models.DB.Delete(&client)
 	return nil
 }

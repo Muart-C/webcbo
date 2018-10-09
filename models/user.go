@@ -1,9 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
 //User model
 type User struct {
 	BaseModel
@@ -52,9 +48,9 @@ type TeamMember struct {
 type Hours struct {
 	BaseModel
 	HoursEmployeeID int
-	AssignedOn      time.Time
-	AssignedAt      time.Time
-	HoursCompleted  float64 `gorm:"type:decimal(10,2)"`
+	AssignedOn      string
+	AssignedAt      string
+	HoursCompleted  float64
 	WorkCompleted   string  `gorm:"type:text"`
 }
 
