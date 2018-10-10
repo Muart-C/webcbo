@@ -12,19 +12,26 @@ func SetUserRouter(router *mux.Router) *mux.Router {
 	router.HandleFunc("/users/{id}", controllers.UpdateUserController).Methods("PUT")
 	router.HandleFunc("/users/{id}", controllers.DeleteUserController).Methods("DELETE")
 
+
+	//Project Manager routes
+	router.HandleFunc("/users/{id}/managers", controllers.CreateProjectManagerController).Methods("POST")
+	router.HandleFunc("/managers", controllers.GetProjectManagersController).Methods("GET")
+	router.HandleFunc("/managers/{id}", controllers.GetProjectManagerController).Methods("GET")
+	router.HandleFunc("/managers/{id}", controllers.UpdateProjectManagerController).Methods("PUT")
+
 	//Employee routes
 	router.HandleFunc("/users/{id}/employees", controllers.CreateEmployeeController).Methods("POST")
 	router.HandleFunc("/employees", controllers.GetEmployeesController).Methods("GET")
 	router.HandleFunc("/employees/{id}", controllers.GetEmployeeController).Methods("GET")
 	router.HandleFunc("/employees/{id}", controllers.UpdateEmployeeController).Methods("PUT")
-	router.HandleFunc("/employees/{id}", controllers.DeleteEmployeeController).Methods("DELETE")
+
 
 	//EmployeeHours routes
 	router.HandleFunc("/employees/{id}/hours", controllers.CreateEmployeeHoursController).Methods("POST")
 	router.HandleFunc("/hours", controllers.GetEmployeesHoursController).Methods("GET")
 	router.HandleFunc("/hours/{id}", controllers.GetEmployeeHoursController).Methods("GET")
 	router.HandleFunc("/hours/{id}", controllers.UpdateEmployeeHoursController).Methods("PUT")
-	router.HandleFunc("/hours/{id}", controllers.DeleteEmployeeHoursController).Methods("DELETE")
+
 
 	//Client routes
 	router.HandleFunc("/clients", controllers.CreateClientController).Methods("POST")

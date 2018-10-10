@@ -3,6 +3,8 @@ package repository
 import (
 	"errors"
 	"github.com/Muart-C/webcbo/models"
+	
+	
 )
 
 //CreateUser Method definition
@@ -106,7 +108,7 @@ func UpdateEmployee(employeeProfession string, id int) (*models.Employee, error)
 	if employee.ID == id {
 
 		employee.EmployeeProfession = employeeProfession
-		models.DB.Save(employee)
+		models.DB.Save(&employee)
 
 	}
 	return &employee, nil
@@ -123,17 +125,17 @@ func DeleteEmployee(id int) error {
 }
 
 //CreateEmployeeHours method definition
-func CreateEmployeeHours(employee models.Employee, assignedOn, assignedAt string, hoursCompleted float64, workCompleted string) (*models.Hours, error) {
+func CreateEmployeeHours(employee models.Employee, assignedOn string, assignedAt string, hoursCompleted float64, workCompleted string) (*models.Hours, error) {
 	var employeeHours models.Hours
-	employeeHours.AssignedAt = assignedAt
 	employeeHours.AssignedOn = assignedOn
+	employeeHours.AssignedAt = assignedAt
 	employeeHours.HoursEmployeeID = employee.ID
 	employeeHours.HoursCompleted = hoursCompleted
 	employeeHours.WorkCompleted = workCompleted
 	result := models.DB.Create(&employeeHours)
 
 	if result == nil {
-		return nil, errors.New("Error adding employeeHours")
+		return nil, errors.New("Error adding employee Hours")
 	}
 	return &employeeHours, nil
 }
@@ -174,15 +176,6 @@ func UpdateEmployeeHours(assignedOn, assignedAt string, hoursCompleted float64, 
 	return &employeeHours, nil
 }
 
-//DeleteEmployeeHours method definition
-func DeleteEmployeeHours(id int) error {
-	employeeHours, err := FetchEmployeeHours(id) //RUN TESTS
-	if err != nil {
-		return errors.New("An error occured while deleting an employeeHours")
-	}
-	models.DB.Delete(&employeeHours)
-	return nil
-}
 
 //CreateRole Method definition
 func CreateRole(roleName string) (*models.Role, error) {
@@ -361,3 +354,54 @@ func DeleteClient(id int) error { //RUN TESTS
 	models.DB.Delete(&client)
 	return nil
 }
+
+
+//CreateProjectManager method definition
+func CreateProjectManager(user models.User,project int,client int) (*models.ProjectManager, error) {
+	var manager models.ProjectManager
+	manager.ProjectManagerUserID= user.ID
+	manager.ProjectManagerProjectID = project
+	manager.ProjectManagerClientID = client
+	result := models.DB.Create(&manager)
+
+	if result == nil {
+		return nil, errors.New("Error Assigning project manager")
+	}
+	return &manager, nil
+}
+
+//FetchProjectManager method definition
+func FetchProjectManager(id int) (*models.ProjectManager, error) {
+	var manager models.ProjectManager
+	models.DB.Where("id=?", id).Find(&manager)
+	if manager.ID == id {
+		return &manager, nil
+	}
+	return nil, errors.New("Manager with that id not found")
+}
+
+//FetchProjectManagers method definition
+func FetchProjectManagers() (*[]models.ProjectManager, error) {
+	var managers []models.ProjectManager
+	models.DB.Find(&managers)
+	if len(managers) > 0 {
+		return &managers, nil
+	}
+	return nil, errors.New("No managers were found")
+}
+
+//UpdateProjectManager method definition
+func UpdateProjectManager(project, client, id int) (*models.ProjectManager, error) {
+	var manager models.ProjectManager
+	//employee,err := FetchEmployee(id)
+	models.DB.Where("id=?", id).Find(&manager)
+	if manager.ID == id {
+		manager.ProjectManagerProjectID= project
+		manager.ProjectManagerProjectID= client
+		models.DB.Save(&manager)
+
+	}
+	return &manager, nil
+}
+
+

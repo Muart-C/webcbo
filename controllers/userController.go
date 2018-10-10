@@ -159,19 +159,7 @@ func UpdateEmployeeController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//DeleteEmployeeController controller definition
-func DeleteEmployeeController(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	employeeID, err := strconv.Atoi(params["id"])
-	if err == nil {
-		err := repository.DeleteEmployee(employeeID)
-		if err != nil {
-			RespondWithError(w, http.StatusNotFound, "User not found")
-			return
-		}
-		RespondWithJSON(w, http.StatusFound, "Employee Deleted successfully")
-	}
-}
+
 
 //CreateEmployeeHoursController controller definition
 func CreateEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
@@ -245,19 +233,6 @@ func UpdateEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//DeleteEmployeeHoursController controller definition
-func DeleteEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	employeeID, err := strconv.Atoi(params["id"])
-	if err == nil {
-		err := repository.DeleteEmployee(employeeID)
-		if err != nil {
-			RespondWithError(w, http.StatusNotFound, "employee hours not found")
-			return
-		}
-		RespondWithJSON(w, http.StatusFound, "Employee Deleted successfully")
-	}
-}
 
 //CreateRoleController controller definition
 func CreateRoleController(w http.ResponseWriter, r *http.Request) {
@@ -490,5 +465,74 @@ func DeleteClientController(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		RespondWithJSON(w, http.StatusFound, "Client Deleted successfully")
+	}
+}
+
+//CreateProjectManagerController controller definition
+func CreateProjectManagerController(w http.ResponseWriter, r *http.Request) {
+	var manager models.ProjectManager
+	params := mux.Vars(r)
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		user, err := repository.FetchUser(userID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "User not found register him/her as a user first")
+			return
+		}
+		er := json.NewDecoder(r.Body).Decode(&manager)
+		if er != nil {
+			RespondWithError(w, 500, "Invalid manager payload")
+			return
+		}
+		//save a new manager
+		response, err := repository.CreateProjectManager(*user, manager.ProjectManagerProjectID,manager.ProjectManagerClientID)
+		if err != nil {
+			RespondWithError(w, 500, "Manager not created")
+		}
+		RespondWithJSON(w, http.StatusCreated, response)
+	}
+}
+
+//GetProjectManagersController controller definition
+func GetProjectManagersController(w http.ResponseWriter, r *http.Request) {
+	managers, err := repository.FetchProjectManagers()
+	if err != nil {
+		RespondWithError(w, http.StatusNotFound, "No Managers")
+	}
+	RespondWithJSON(w, http.StatusFound, managers)
+}
+
+//GetProjectManagerController controller definition
+func GetProjectManagerController(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	managerID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		manager, err := repository.FetchProjectManager(managerID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "manager not found")
+			return
+		}
+		RespondWithJSON(w, http.StatusFound, manager)
+	}
+}
+
+//UpdateProjectManagerController controller definition
+func UpdateProjectManagerController(w http.ResponseWriter, r *http.Request) {
+	var manager models.ProjectManager
+	//Decode the incoming manager json data
+	err := json.NewDecoder(r.Body).Decode(&manager)
+	if err != nil {
+		RespondWithError(w, 500, "Invalid manager data on the body")
+		return
+	}
+	params := mux.Vars(r)
+	employeeID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		update, err := repository.UpdateProjectManager(manager.ProjectManagerProjectID,manager.ProjectManagerClientID,employeeID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotModified, "Error updating manager")
+			return
+		}
+		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }
