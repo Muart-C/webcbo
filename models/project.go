@@ -6,6 +6,7 @@ import (
 
 //Project Model definition
 type Project struct {
+
 	BaseModel
 	ProjectStatusID         int
 	ProjectName             string  `gorm:"not null"`

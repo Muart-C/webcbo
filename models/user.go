@@ -9,6 +9,7 @@ type User struct {
 	LastName       string           `gorm:"type:varchar(30)"`
 	ProjectManager []ProjectManager `gorm:"foreignkey:ProjectManagerUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Employee       []Employee       `gorm:"foreignkey:EmployeeUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+
 }
 
 //Role model
@@ -34,24 +35,30 @@ type Employee struct {
 	Assigned       []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	TeamMember     []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Hours          Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+
 }
 
 //TeamMember model
 type TeamMember struct {
+
 	BaseModel
 	TeamMemberTeamID     int
 	TeamMemberEmployeeID int
 	TeamMemberRoleID     int
+
+
 }
 
 //Hours model
 type Hours struct {
+
 	BaseModel
 	HoursEmployeeID int
 	AssignedOn      string
 	AssignedAt      string
 	HoursCompleted  float64
 	WorkCompleted   string  `gorm:"type:text"`
+
 }
 
 //Client model
@@ -70,16 +77,16 @@ type Client struct {
 //ProjectManager model
 type ProjectManager struct {
 	BaseModel
-	//Join project_id,project_status_id,user_id,client_id
+
 	ProjectManagerUserID    int
 	ProjectManagerProjectID int
 	ProjectManagerClientID  int
+
 }
 
 //Assigned model
 type Assigned struct {
 	BaseModel
-	//Join activity,employee and role(All have 1 to many relationship)
 	AssignedActivityID int
 	AssignedEmployeeID int
 	AssignedRoleID     int

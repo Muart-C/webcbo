@@ -56,7 +56,9 @@ type ActivityStatus struct {
 	Activity       Activity `gorm:"foreignkey:ActivityStatusID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
+
 //PreviousActivity model
+
 type PreviousActivity struct {
 	BaseModel
 	PreviousActivityID int

@@ -31,7 +31,8 @@ func init() {
 
 }
 
-//Connect to the db
+
+//Database connection
 func Connect() (db *gorm.DB) {
 	db, connError := gorm.Open("mysql", "root:geeky254@tcp(127.0.0.1:3306)/acbo?charset=utf8&parseTime=True")
 	if connError != nil {
