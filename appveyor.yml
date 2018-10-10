@@ -1,7 +1,7 @@
 # appveyor.yml
 build: off
 
-clone_folder: $home/work/src/github.com/Muart-C/webcbo
+clone_folder: $GOPATH/src/github.com/Muart-C/webcbo
 
 environment:
   GOPATH: $home/work/
