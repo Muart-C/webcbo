@@ -1,10 +1,10 @@
 # appveyor.yml
 build: off
 
-clone_folder: /usr/go/src/github.com/Muart-C/webcbo
+clone_folder: $home/work/src/github.com/Muart-C/webcbo
 
 environment:
-  GOPATH: /usr/go/
+  GOPATH: $home/work/
 
 stack: go 1.10
 
