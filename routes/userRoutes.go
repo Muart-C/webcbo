@@ -17,7 +17,7 @@ func SetUserRouter(router *mux.Router) *mux.Router {
 	router.HandleFunc("/users/{id}/managers", controllers.CreateProjectManagerController).Methods("POST")
 	router.HandleFunc("/managers", controllers.GetProjectManagersController).Methods("GET")
 	router.HandleFunc("/managers/{id}", controllers.GetProjectManagerController).Methods("GET")
-	router.HandleFunc("/managers/{id}", controllers.UpdateProjectManagerController).Methods("PUT")
+	//router.HandleFunc("/managers/{id}", controllers.UpdateProjectManagerController).Methods("PUT")//	DEBUG
 
 	//Employee routes
 	router.HandleFunc("/users/{id}/employees", controllers.CreateEmployeeController).Methods("POST")
@@ -31,6 +31,13 @@ func SetUserRouter(router *mux.Router) *mux.Router {
 	router.HandleFunc("/hours", controllers.GetEmployeesHoursController).Methods("GET")
 	router.HandleFunc("/hours/{id}", controllers.GetEmployeeHoursController).Methods("GET")
 	router.HandleFunc("/hours/{id}", controllers.UpdateEmployeeHoursController).Methods("PUT")
+
+
+	//Assign routes
+	router.HandleFunc("/employees/{id}/assignments", controllers.CreateAssignmentController).Methods("POST")
+	router.HandleFunc("/assignments", controllers.GetAssignmentsController).Methods("GET")
+	router.HandleFunc("/assignments/{id}", controllers.GetAssignmentController).Methods("GET")
+	router.HandleFunc("/assignments/{id}", controllers.UpdateAssignmentController).Methods("PUT")
 
 
 	//Client routes

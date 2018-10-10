@@ -159,8 +159,6 @@ func UpdateEmployeeController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-
 //CreateEmployeeHoursController controller definition
 func CreateEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
 	var hours models.Hours
@@ -232,7 +230,6 @@ func UpdateEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
 		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }
-
 
 //CreateRoleController controller definition
 func CreateRoleController(w http.ResponseWriter, r *http.Request) {
@@ -485,7 +482,7 @@ func CreateProjectManagerController(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		//save a new manager
-		response, err := repository.CreateProjectManager(*user, manager.ProjectManagerProjectID,manager.ProjectManagerClientID)
+		response, err := repository.CreateProjectManager(*user, manager.ProjectManagerProjectID, manager.ProjectManagerClientID)
 		if err != nil {
 			RespondWithError(w, 500, "Manager not created")
 		}
@@ -516,21 +513,94 @@ func GetProjectManagerController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//UpdateProjectManagerController controller definition
-func UpdateProjectManagerController(w http.ResponseWriter, r *http.Request) {
-	var manager models.ProjectManager
-	//Decode the incoming manager json data
-	err := json.NewDecoder(r.Body).Decode(&manager)
+
+//	DEBUG
+////UpdateProjectManagerController controller definition
+//func UpdateProjectManagerController(w http.ResponseWriter, r *http.Request) {
+//	var manager models.ProjectManager
+//	//Decode the incoming manager json data
+//	err := json.NewDecoder(r.Body).Decode(&manager)
+//	if err != nil {
+//		RespondWithError(w, 500, "Invalid manager data on the body")
+//		return
+//	}
+//	params := mux.Vars(r)
+//	managerID, err := strconv.Atoi(params["id"])
+//	if err == nil {
+//		update, err := repository.UpdateProjectManager(manager.ProjectManagerProjectID, manager.ProjectManagerClientID, managerID)
+//		if err != nil {
+//			RespondWithError(w, http.StatusNotModified, "Error updating manager")
+//			return
+//		}
+//		RespondWithJSON(w, http.StatusCreated, update)
+//	}
+//}
+//	DEBUG
+
+
+//CreateAssignmentController controller definition
+func CreateAssignmentController(w http.ResponseWriter, r *http.Request) {
+	var assign models.Assigned
+	params := mux.Vars(r)
+	employeeID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		employee, err := repository.FetchEmployee(employeeID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "employee not found register him/her as an employee first before assignment")
+			return
+		}
+		er := json.NewDecoder(r.Body).Decode(&assign)
+		if er != nil {
+			RespondWithError(w, 500, "Invalid assign payload")
+			return
+		}
+		//save a new assign
+		response, err := repository.CreateAssignment(*employee, assign.AssignedActivityID, assign.AssignedRoleID)
+		if err != nil {
+			RespondWithError(w, 500, "assign not created")
+		}
+		RespondWithJSON(w, http.StatusCreated, response)
+	}
+}
+
+//GetAssignmentsController controller definition
+func GetAssignmentsController(w http.ResponseWriter, r *http.Request) {
+	assigns, err := repository.FetchAssignments()
 	if err != nil {
-		RespondWithError(w, 500, "Invalid manager data on the body")
+		RespondWithError(w, http.StatusNotFound, "No assigns")
+	}
+	RespondWithJSON(w, http.StatusFound, assigns)
+}
+
+//GetAssignmentController controller definition
+func GetAssignmentController(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	assignID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		assign, err := repository.FetchAssignment(assignID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "assign not found")
+			return
+		}
+		RespondWithJSON(w, http.StatusFound, assign)
+	}
+}
+
+//UpdateAssignmentController controller definition
+func UpdateAssignmentController(w http.ResponseWriter, r *http.Request) {
+	var assign models.Assigned
+	//Decode the incoming assign json data
+	err := json.NewDecoder(r.Body).Decode(&assign)
+	if err != nil {
+		RespondWithError(w, 500, "Invalid assign data on the body")
 		return
 	}
 	params := mux.Vars(r)
 	employeeID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		update, err := repository.UpdateProjectManager(manager.ProjectManagerProjectID,manager.ProjectManagerClientID,employeeID)
+		update, err := repository.UpdateAssignment(assign.AssignedActivityID, assign.AssignedRoleID, employeeID)
 		if err != nil {
-			RespondWithError(w, http.StatusNotModified, "Error updating manager")
+			RespondWithError(w, http.StatusNotModified, "Error updating assign")
 			return
 		}
 		RespondWithJSON(w, http.StatusCreated, update)
