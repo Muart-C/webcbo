@@ -11,14 +11,14 @@ type Project struct {
 	ProjectStatusID         int
 	ProjectName             string  `gorm:"not null"`
 	ProjectDescription      string  `gorm:"type:text; not null"`
-	ProjectBudget           float64 `gorm:"null"`
+	ProjectBudget           float64
 	ProjectLaborCost        float64
 	ProjectMaterialCost     float64
-	ProjectPlannedStartDate time.Time
-	ProjectPlannedEndDate   time.Time
-	ProjectActualStartDate  time.Time
-	ProjectActualEndDate    time.Time
-	ProjectTotalHours       float64          `gorm:"type:decimal(10,2)"`
+	ProjectPlannedStartDate string
+	ProjectPlannedEndDate   string
+	ProjectActualStartDate  string
+	ProjectActualEndDate    string
+	ProjectTotalHours       float64
 	Task []Task `gorm:"foreignkey:TaskProjectID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	ProjectManager          []ProjectManager `gorm:"foreignkey:ProjectManagerProjectID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
@@ -37,7 +37,7 @@ type Milestone struct {
 	MilestoneStatusID     int
 	MilestoneName         string  `gorm:"not null"`
 	MilestoneDeliverables string  `gorm:"type:text; not null"`
-	MilestoneTotalHours   float64 `gorm:"type:decimal(10,2)"`
+	MilestoneTotalHours   float64
 	MilestoneDueDate      time.Time
 	MilestoneAchievedDate time.Time
 }

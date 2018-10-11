@@ -3,14 +3,14 @@ package repository
 import (
 	"errors"
 	"github.com/Muart-C/webcbo/models"
-	"time"
 )
 
 //CreateProject method definition
-func CreateProject(projectName,projectDescription string,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate time.Time,projectTotalHours float64) (*models.Project, error) {
+func CreateProject(projectName,projectDescription string,projectBudget,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64) (*models.Project, error) {
 	var project models.Project
 	project.ProjectName = projectName
 	project.ProjectDescription = projectDescription
+	project.ProjectBudget = projectBudget
 	project.ProjectMaterialCost = projectMaterialCost
 	project.ProjectLaborCost = projectLaborCost
 	project.ProjectTotalHours = projectTotalHours
@@ -47,12 +47,13 @@ func FetchProject(id int)(*models.Project,error)  {
 }
 
 //UpdateProject repo method definition
-func UpdateProject(projectName,projectDescription string,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate time.Time,projectTotalHours float64, id int) (*models.Project, error)  {
+func UpdateProject(projectName,projectDescription string,projectBudget,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64, id int) (*models.Project, error)  {
 	var project models.Project
 	models.DB.Where("id = ?",id).Find(&project)
 	if project.ID == id {
 		project.ProjectName = projectName
 		project.ProjectDescription = projectDescription
+		project.ProjectBudget = projectBudget
 		project.ProjectMaterialCost = projectMaterialCost
 		project.ProjectLaborCost = projectLaborCost
 		project.ProjectPlannedStartDate = projectPlannedStartDate

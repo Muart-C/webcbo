@@ -1,9 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
 //Task model
 type Task struct {
 	BaseModel
@@ -14,10 +10,10 @@ type Task struct {
 	TaskTotalHours       float64
 	TaskPlannedBudget    float64
 	TaskActualBudget     float64
-	TaskPlannedStartDate time.Time
-	TaskPlannedEndDate   time.Time
-	TaskActualStartDate  time.Time
-	TaskActualEndDate    time.Time
+	TaskPlannedStartDate string
+	TaskPlannedEndDate   string
+	TaskActualStartDate  string
+	TaskActualEndDate    string
 	PreviousTask         []PreviousTask `gorm:"foreignkey:PreviousTaskID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
@@ -42,10 +38,10 @@ type Activity struct {
 	ActivityName             string
 	ActivityPlannedBudget    float64
 	ActivityActualBudget     float64
-	ActivityPlannedStartDate time.Time
-	ActivityPlannedEndDate   time.Time
-	ActivityActualStartDate  time.Time
-	ActivityActualEndDate    time.Time
+	ActivityPlannedStartDate string
+	ActivityPlannedEndDate   string
+	ActivityActualStartDate  string
+	ActivityActualEndDate    string
 	PreviousActivity         []PreviousActivity `gorm:"foreignkey:PreviousActivityID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Assigned                 []Assigned         `gorm:"foreignkey:AssignedActivityID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
