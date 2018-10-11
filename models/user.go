@@ -9,7 +9,6 @@ type User struct {
 	LastName       string           `gorm:"type:varchar(30)"`
 	ProjectManager []ProjectManager `gorm:"foreignkey:ProjectManagerUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Employee       []Employee       `gorm:"foreignkey:EmployeeUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-
 }
 
 //Role model
@@ -30,35 +29,29 @@ type Team struct {
 //Employee model
 type Employee struct {
 	BaseModel
-	EmployeeUserID int
-	EmployeeProfession   string       `gorm:"varchar(30)"`
-	Assigned       []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	TeamMember     []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	Hours          Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-
+	EmployeeUserID     int
+	EmployeeProfession string       `gorm:"varchar(30)"`
+	Assigned           []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	TeamMember         []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Hours              Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 
 //TeamMember model
 type TeamMember struct {
-
 	BaseModel
 	TeamMemberTeamID     int
 	TeamMemberEmployeeID int
 	TeamMemberRoleID     int
-
-
 }
 
 //Hours model
 type Hours struct {
-
 	BaseModel
 	HoursEmployeeID int
 	AssignedOn      string
 	AssignedAt      string
 	HoursCompleted  float64
-	WorkCompleted   string  `gorm:"type:text"`
-
+	WorkCompleted   string `gorm:"type:text"`
 }
 
 //Client model
@@ -81,7 +74,6 @@ type ProjectManager struct {
 	ProjectManagerUserID    int
 	ProjectManagerProjectID int
 	ProjectManagerClientID  int
-
 }
 
 //Assigned model
@@ -91,4 +83,3 @@ type Assigned struct {
 	AssignedEmployeeID int
 	AssignedRoleID     int
 }
-

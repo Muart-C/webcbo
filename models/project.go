@@ -19,6 +19,7 @@ type Project struct {
 	ProjectActualStartDate  time.Time
 	ProjectActualEndDate    time.Time
 	ProjectTotalHours       float64          `gorm:"type:decimal(10,2)"`
+	Task []Task `gorm:"foreignkey:TaskProjectID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	ProjectManager          []ProjectManager `gorm:"foreignkey:ProjectManagerProjectID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }
 

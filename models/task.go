@@ -8,6 +8,7 @@ import (
 type Task struct {
 	BaseModel
 	TaskStatusID         int
+	TaskProjectID         int
 	TaskName             string
 	TaskInstructions     string `gorm:"type:text"`
 	TaskTotalHours       float64
