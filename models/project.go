@@ -1,9 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
 //Project Model definition
 type Project struct {
 
@@ -38,8 +34,8 @@ type Milestone struct {
 	MilestoneName         string  `gorm:"not null"`
 	MilestoneDeliverables string  `gorm:"type:text; not null"`
 	MilestoneTotalHours   float64
-	MilestoneDueDate      time.Time
-	MilestoneAchievedDate time.Time
+	MilestoneDueDate      string
+	MilestoneAchievedDate string
 }
 
 //MilestoneStatus Model definition

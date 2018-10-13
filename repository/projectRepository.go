@@ -67,3 +67,81 @@ func UpdateProject(projectName,projectDescription string,projectBudget,projectLa
 	return nil,errors.New("error occurred while updating the project")
 }
 
+//CreateProjectStatus repo method definition
+func CreateProjectStatus(projectStatus string,projectIsActive bool)(*models.ProjectStatus,error)  {
+	var status models.ProjectStatus
+	status.ProjectStatus = projectStatus
+	status.ProjectIsActive = projectIsActive
+	result := models.DB.Create(status)
+	if result != nil {
+		return &status,nil
+	}
+	return nil,errors.New("an error occurred while assigning a project status")
+}
+
+//UpdateProjectStatus repo method definition
+func UpdateProjectStatus(projectStatus string, projectIsActive bool, id int) (*models.ProjectStatus,error) {
+	var status models.ProjectStatus
+	models.DB.Where("id=?",id).Find(&status)
+	if status.ID == id {
+		status.ProjectStatus = projectStatus
+		status.ProjectIsActive = projectIsActive
+		models.DB.Save(&status)
+		return &status, nil
+	}
+	return nil, errors.New("an error occurred while updating the status of the project")
+}
+
+//CreateMilestone repo method definition
+func CreateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64) (*models.Milestone, error) {
+	var milestone models.Milestone
+	milestone.MilestoneName = milestoneName
+	milestone.MilestoneDeliverables = milestoneDeliverables
+	milestone.MilestoneDueDate = milestoneDueDate
+	milestone.MilestoneAchievedDate = milestoneAchievedDate
+	milestone.MilestoneTotalHours = milestoneTotalHours
+	results := models.DB.Create(&milestone)
+	if results != nil {
+		return &milestone, nil
+	}
+	return nil, errors.New("an error occurred while assigning the milestone")
+}
+
+//UpdateMilestone repo method definition
+func UpdateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64, id int) (*models.Milestone, error) {
+	var milestone models.Milestone
+	models.DB.Where("id=?",id).Find(&milestone)
+	if milestone.ID == id {
+		milestone.MilestoneName= milestoneName
+		milestone.MilestoneDeliverables= milestoneDeliverables
+		milestone.MilestoneDueDate = milestoneDueDate
+		milestone.MilestoneAchievedDate = milestoneAchievedDate
+		milestone.MilestoneTotalHours = milestoneTotalHours
+		models.DB.Save(&milestone)
+		return &milestone, nil
+	}
+	return nil, errors.New("an error occurred while updating the milestone")
+}
+
+//CreateMilestoneStatus repo method definition
+func CreateMilestoneStatus(milestoneStatus string)(*models.MilestoneStatus,error)  {
+	var status models.MilestoneStatus
+	status.MilestoneStatus= milestoneStatus
+	result := models.DB.Create(status)
+	if result != nil {
+		return &status,nil
+	}
+	return nil,errors.New("an error occurred while assigning a milestone status")
+}
+
+//UpdateMilestoneStatus repo method definition
+func UpdateMilestoneStatus(milestoneStatus string, id int) (*models.MilestoneStatus,error) {
+	var status models.MilestoneStatus
+	models.DB.Where("id=?",id).Find(&status)
+	if status.ID == id {
+		status.MilestoneStatus= milestoneStatus
+		models.DB.Save(&status)
+		return &status, nil
+	}
+	return nil, errors.New("an error occurred while updating the status of the milestone")
+}

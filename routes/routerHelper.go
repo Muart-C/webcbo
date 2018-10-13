@@ -10,7 +10,7 @@ func InitializeRoutes() *mux.Router  {
 	//router for Project
 	router = SetProjectRouter(router)
 	//router for Task
-	//router = SetTaskRouter(router)
+	router = SetTaskRouter(router)
 
 	return router
 }
