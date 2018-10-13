@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+
 //CreateUserController controller definition
 func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	var user models.User
@@ -23,7 +24,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	response, err := repository.CreateUser(user.UserName, user.Email, user.LastName, user.FirstName)
 
 	if err != nil {
-		RespondWithError(w, 500, "An unexpected error occured")
+		RespondWithError(w,http.StatusInternalServerError, "An unexpected error occurred")
 	}
 	RespondWithJSON(w, http.StatusCreated, response)
 }

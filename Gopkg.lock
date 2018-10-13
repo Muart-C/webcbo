@@ -2,23 +2,20 @@
 
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   digest = "1:adea5a94903eb4384abef30f3d878dc9ff6b6b5b0722da25b82e5169216dfb61"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
   pruneopts = "UT"
   revision = "d523deb1b23d913de5bdada721a6071e71283618"
   version = "v1.4.0"
-
-[[projects]]
-  digest = "1:d54df1fb58660918d29dfd14de544579e3ae14325fba85bf82703f91e8025148"
-  name = "github.com/golang/protobuf"
-  packages = [
-    "proto",
-    "ptypes/timestamp",
-  ]
-  pruneopts = "UT"
-  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
-  version = "v1.2.0"
 
 [[projects]]
   digest = "1:c79fb010be38a59d657c48c6ba1d003a8aa651fa56b579d959d74573b7dff8e1"
@@ -63,23 +60,15 @@
   revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
   version = "v1.2.0"
 
-[[projects]]
-  branch = "master"
-  digest = "1:242f094923dfd1a32dfe8ea86544c7e0bf725add8641255220ea5f24823298a4"
-  name = "google.golang.org/genproto"
-  packages = ["googleapis/type/date"]
-  pruneopts = "UT"
-  revision = "af9cb2a35e7f169ec875002c1829c9b315cddc04"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/golang/protobuf/ptypes/timestamp",
+    "github.com/dgrijalva/jwt-go",
+    "github.com/gorilla/context",
     "github.com/gorilla/mux",
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/mysql",
-    "google.golang.org/genproto/googleapis/type/date",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
