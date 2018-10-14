@@ -27,12 +27,12 @@ type Database interface {
 func init() {
 
 	DB = Connect()
-	DB.AutoMigrate(User{}, Project{}, Task{}, Activity{}, Assigned{}, Client{}, Employee{}, Hours{}, Milestone{}, MilestoneStatus{}, PreviousActivity{}, PreviousTask{}, ProjectManager{}, ProjectStatus{}, Role{}, Task{}, TaskStatus{}, Team{}, TeamMember{}, ActivityStatus{})
+	DB.AutoMigrate(User{}, Project{}, Task{}, Activity{}, Assigned{}, Client{}, Employee{}, Hours{}, Milestone{}, PreviousActivity{}, PreviousTask{}, ProjectManager{}, Role{}, Task{}, Team{}, TeamMember{})
 
 }
 
 
-//Database connection
+//Connect Database connection
 func Connect() (db *gorm.DB) {
 	db, connError := gorm.Open("mysql", "root:geeky254@tcp(127.0.0.1:3306)/acbo?charset=utf8&parseTime=True")
 	if connError != nil {

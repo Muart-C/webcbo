@@ -13,7 +13,7 @@ type User struct {
 	Email          string           `gorm:"unique; not null"`
 	FirstName      string           `gorm:"type:varchar(30)"`
 	LastName       string           `gorm:"type:varchar(30)"`
-	Password       string			`gorm:"type:varchar(130)"`
+	Password       []byte
 	ProjectManager []ProjectManager `gorm:"foreignkey:ProjectManagerUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 	Employee       []Employee       `gorm:"foreignkey:EmployeeUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
 }

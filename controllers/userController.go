@@ -5,6 +5,7 @@ import (
 	"github.com/Muart-C/webcbo/models"
 	"github.com/Muart-C/webcbo/repository"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
 )
@@ -19,10 +20,13 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 		RespondWithError(w, 500, "Invalid user data on the body")
 		return
 	}
+
 	//save a new user
-
-	response, err := repository.CreateUser(user.UserName, user.Email, user.LastName, user.FirstName)
-
+	hash,err := bcrypt.GenerateFromPassword([]byte(user.Password),bcrypt.DefaultCost)
+	if err != nil {
+		RespondWithError(w,http.StatusBadRequest,"an error occurred while hashing the password")
+	}
+	response, err := repository.CreateUser(user.UserName, user.Email, user.LastName, user.FirstName,hash)
 	if err != nil {
 		RespondWithError(w,http.StatusInternalServerError, "An unexpected error occurred")
 	}
@@ -33,7 +37,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 func GetUsersController(w http.ResponseWriter, r *http.Request) {
 	users, err := repository.FetchUsers()
 	if err != nil {
-		RespondWithError(w, http.StatusNotFound, err.Error())
+		RespondWithError(w, http.StatusNotFound, "No users found")
 	}
 	RespondWithJSON(w, http.StatusFound, users)
 }

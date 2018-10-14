@@ -9,10 +9,13 @@ import (
 func SetTaskRouter(router *mux.Router) *mux.Router  {
 
 	router.HandleFunc("/projects/{id}/tasks",controllers.AuthenticationMiddleware(controllers.CreateTaskController)).Methods("POST")
+	router.HandleFunc("/projects/{id}/tasks",controllers.AuthenticationMiddleware(controllers.GetTasksInProjectController)).Methods("GET")
 	router.HandleFunc("/tasks",controllers.AuthenticationMiddleware(controllers.GetTasksController)).Methods("GET")
 	router.HandleFunc("/tasks/{id}",controllers.AuthenticationMiddleware(controllers.GetTaskController)).Methods("GET")
 	router.HandleFunc("/tasks/{id}", controllers.AuthenticationMiddleware(controllers.UpdateTaskController	)).Methods("PUT")
 	router.HandleFunc("/tasks/{id}/activities",controllers.AuthenticationMiddleware(controllers.CreateActivityController)).Methods("POST")
+	router.HandleFunc("/tasks/{id}/activities",controllers.AuthenticationMiddleware(controllers.GetActivitiesInTaskController)).Methods("GET")
+	router.HandleFunc("/activities/{id}",controllers.AuthenticationMiddleware(controllers.GetActivityController)).Methods("GET")
 	router.HandleFunc("/activities/{id}", controllers.AuthenticationMiddleware(controllers.UpdateActivityController)).Methods("PUT")
 	return router
 }

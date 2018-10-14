@@ -27,6 +27,18 @@ func CreateTask(project models.Project,taskName,taskStatus,taskInstructions,task
 	return nil,errors.New("an error occurred while adding a task")
 }
 
+
+//FetchTasksInProject repository method definition
+func FetchTasksInProject(id int)(*[]models.Task,error)  {
+	var tasks []models.Task
+	//result :=models.DB.Find(&milestones)
+	result := models.DB.Where("id = ?",id).Find(&tasks)
+	if  result != nil{
+		return &tasks,nil
+	}
+	return nil, errors.New("error returning tasks belonging to that particular project")
+}
+
 //FetchTasks repository method definition
 func FetchTasks()(*[]models.Task,error)  {
 	var tasks []models.Task
@@ -101,7 +113,7 @@ func FetchActivitiesInTask(id int)(*[]models.Activity,error)  {
 	return nil, errors.New("error returning milestones")
 }
 
-//UpdateMilestone repo method definition
+//UpdateActivity repo method definition
 func UpdateActivity(activityName,activityStatus string,activityPlannedBudget,activityActualBudget float64,activityPlannedStartDate,activityPlannedEndDate,activityActualStartDate,activityActualEndDate string, id int) (*models.Activity, error){
 	var activity models.Activity
 	models.DB.Where("id=?",id).Find(&activity)

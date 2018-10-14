@@ -32,6 +32,22 @@ func CreateTaskController(w http.ResponseWriter, r *http.Request)  {
 		RespondWithJSON(w,http.StatusCreated,response)
 	}
 }
+
+//GetTasksInProjectController controller definition
+func GetTasksInProjectController(w http.ResponseWriter, r *http.Request){
+	params := mux.Vars(r)
+	projectID, err := strconv.Atoi(params["id"])
+	if err == nil {
+
+		activities, err := repository.FetchTasksInProject(projectID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "error retrieving the activities of the particular task")
+		}
+		RespondWithJSON(w, http.StatusFound, activities)
+	}
+
+}
+
 //GetTasksController controller definition
 func GetTasksController(w http.ResponseWriter, r *http.Request){
 	tasks, err := repository.FetchTasks()
@@ -103,15 +119,19 @@ func CreateActivityController(w http.ResponseWriter, r *http.Request) {
 //GetActivitiesInTaskController controller definition
 func GetActivitiesInTaskController(w http.ResponseWriter, r *http.Request){
 	params := mux.Vars(r)
-	activities, err := repository.FetchActivitiesInTask(params["id"])
-	if err != nil {
-		RespondWithError(w,http.StatusNotFound,"error retrieving the activities of the particular task")
-	}
-	RespondWithJSON(w,http.StatusFound,activities)
-}
+	taskID, err := strconv.Atoi(params["id"])
+	if err == nil {
 
-//GetMilestoneController controller definition
-func GetMilestoneController(w http.ResponseWriter, r *http.Request) {
+		activities, err := repository.FetchActivitiesInTask(taskID)
+		if err != nil {
+			RespondWithError(w, http.StatusNotFound, "error retrieving the activities of the particular task")
+		}
+		RespondWithJSON(w, http.StatusFound, activities)
+	}
+
+}
+//GetActivityController controller definition
+func GetActivityController(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	milestoneID, err := strconv.Atoi(params["id"])
 	if err != nil {

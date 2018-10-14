@@ -6,12 +6,13 @@ import (
 )
 
 //CreateUser Method definition
-func CreateUser(userName, email, firstName, lastName string) (*models.User, error) {
+func CreateUser(userName, email, firstName, lastName string,password []byte ) (*models.User, error) {
 	var user models.User
 	user.UserName = userName
 	user.Email = email
 	user.FirstName = firstName
 	user.LastName = lastName
+	user.Password = password
 	result := models.DB.Create(&user)
 
 	if result != nil {

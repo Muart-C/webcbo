@@ -102,7 +102,7 @@ func CreateEmployeeHoursController(w http.ResponseWriter, r *http.Request) {
 		response, err := repository.CreateEmployeeHours(*employee, hours.AssignedOn, hours.AssignedAt, hours.HoursCompleted, hours.WorkCompleted)
 
 		if err != nil {
-			RespondWithError(w, 500, "An unexpected error occured")
+			RespondWithError(w, 500, "An unexpected error occurred")
 		}
 		RespondWithJSON(w, http.StatusCreated, response)
 	}

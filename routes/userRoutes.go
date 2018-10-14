@@ -11,7 +11,7 @@ func SetUserRouter(router *mux.Router) *mux.Router {
 	//Authentication get token
 	router.HandleFunc("/auth", controllers.GetAuthToken).Methods("POST")
 
-	router.HandleFunc("/users", controllers.AuthenticationMiddleware(controllers.CreateUserController)).Methods("POST")
+	router.HandleFunc("/users", controllers.CreateUserController).Methods("POST")
 	router.HandleFunc("/users", controllers.AuthenticationMiddleware(controllers.GetUsersController)).Methods("GET")
 	router.HandleFunc("/users/{id}", controllers.AuthenticationMiddleware(controllers.GetUserController)).Methods("GET")
 	router.HandleFunc("/users/{id}", controllers.AuthenticationMiddleware(controllers.UpdateUserController)).Methods("PUT")

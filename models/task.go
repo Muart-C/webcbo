@@ -44,7 +44,6 @@ type Activity struct {
 
 
 //PreviousActivity model
-
 type PreviousActivity struct {
 	BaseModel
 	PreviousActivityID int
