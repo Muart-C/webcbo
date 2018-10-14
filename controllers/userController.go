@@ -88,8 +88,6 @@ func DeleteUserController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-
 //CreateProjectManagerController controller definition
 func CreateProjectManagerController(w http.ResponseWriter, r *http.Request) {
 	var manager models.ProjectManager

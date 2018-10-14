@@ -6,10 +6,12 @@ import (
 )
 
 //CreateProject method definition
-func CreateProject(projectName,projectDescription string,projectBudget,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64) (*models.Project, error) {
+func CreateProject(projectName,projectDescription,projectStatus string,projectIsActive bool,projectBudget,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64) (*models.Project, error) {
 	var project models.Project
 	project.ProjectName = projectName
 	project.ProjectDescription = projectDescription
+	project.ProjectStatus = projectStatus
+	project.ProjectIsActive = projectIsActive
 	project.ProjectBudget = projectBudget
 	project.ProjectMaterialCost = projectMaterialCost
 	project.ProjectLaborCost = projectLaborCost
@@ -18,7 +20,6 @@ func CreateProject(projectName,projectDescription string,projectBudget,projectMa
 	project.ProjectPlannedEndDate = projectPlannedEndDate
 	project.ProjectActualStartDate = projectActualStartDate
 	project.ProjectActualEndDate = projectActualEndDate
-
 	result := models.DB.Create(&project)
 	if result != nil {
 		return &project,nil
@@ -47,12 +48,14 @@ func FetchProject(id int)(*models.Project,error)  {
 }
 
 //UpdateProject repo method definition
-func UpdateProject(projectName,projectDescription string,projectBudget,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64, id int) (*models.Project, error)  {
+	func UpdateProject(projectName,projectDescription,projectStatus string,projectIsActive bool, projectBudget,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64, id int) (*models.Project, error)  {
 	var project models.Project
 	models.DB.Where("id = ?",id).Find(&project)
 	if project.ID == id {
 		project.ProjectName = projectName
 		project.ProjectDescription = projectDescription
+		project.ProjectStatus = projectStatus
+		project.ProjectIsActive = projectIsActive
 		project.ProjectBudget = projectBudget
 		project.ProjectMaterialCost = projectMaterialCost
 		project.ProjectLaborCost = projectLaborCost
@@ -67,39 +70,19 @@ func UpdateProject(projectName,projectDescription string,projectBudget,projectLa
 	return nil,errors.New("error occurred while updating the project")
 }
 
-//CreateProjectStatus repo method definition
-func CreateProjectStatus(projectStatus string,projectIsActive bool)(*models.ProjectStatus,error)  {
-	var status models.ProjectStatus
-	status.ProjectStatus = projectStatus
-	status.ProjectIsActive = projectIsActive
-	result := models.DB.Create(status)
-	if result != nil {
-		return &status,nil
-	}
-	return nil,errors.New("an error occurred while assigning a project status")
-}
 
-//UpdateProjectStatus repo method definition
-func UpdateProjectStatus(projectStatus string, projectIsActive bool, id int) (*models.ProjectStatus,error) {
-	var status models.ProjectStatus
-	models.DB.Where("id=?",id).Find(&status)
-	if status.ID == id {
-		status.ProjectStatus = projectStatus
-		status.ProjectIsActive = projectIsActive
-		models.DB.Save(&status)
-		return &status, nil
-	}
-	return nil, errors.New("an error occurred while updating the status of the project")
-}
+
 
 //CreateMilestone repo method definition
-func CreateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64) (*models.Milestone, error) {
+func CreateMilestone(project models.Project,milestoneName,milestoneStatus,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64) (*models.Milestone, error) {
 	var milestone models.Milestone
 	milestone.MilestoneName = milestoneName
+	milestone.MilestoneStatus = milestoneStatus
 	milestone.MilestoneDeliverables = milestoneDeliverables
 	milestone.MilestoneDueDate = milestoneDueDate
 	milestone.MilestoneAchievedDate = milestoneAchievedDate
 	milestone.MilestoneTotalHours = milestoneTotalHours
+	milestone.MilestoneProjectID = project.ID
 	results := models.DB.Create(&milestone)
 	if results != nil {
 		return &milestone, nil
@@ -107,12 +90,44 @@ func CreateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milest
 	return nil, errors.New("an error occurred while assigning the milestone")
 }
 
+//FetchMilestones repository method definition
+func FetchMilestones()(*[]models.Milestone,error)  {
+	var milestones []models.Milestone
+	result :=models.DB.Find(&milestones)
+	if  result != nil{
+		return &milestones,nil
+	}
+	return nil, errors.New("error returning milestones")
+}
+
+//FetchMilestonesInProject repository method definition
+func FetchMilestonesInProject(id int)(*[]models.Milestone,error)  {
+	var milestones []models.Milestone
+	//result :=models.DB.Find(&milestones)
+	result := models.DB.Where("id = ?",id).Find(&milestones)
+	if  result != nil{
+		return &milestones,nil
+	}
+	return nil, errors.New("error returning milestones for that particular project")
+}
+
+//FetchMilestone repository method definition
+func FetchMilestone(id int)(*models.Milestone,error)  {
+	var milestone models.Milestone
+	models.DB.Where("id = ?",id).Find(&milestone)
+	if milestone.ID == id {
+		return &milestone,nil
+	}
+	return nil,errors.New("error returning the specified project")
+}
+
 //UpdateMilestone repo method definition
-func UpdateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64, id int) (*models.Milestone, error) {
+func UpdateMilestone(milestoneName,milestoneStatus,milestoneDeliverables,milestoneDueDate,milestoneAchievedDate string,milestoneTotalHours float64, id int) (*models.Milestone, error) {
 	var milestone models.Milestone
 	models.DB.Where("id=?",id).Find(&milestone)
 	if milestone.ID == id {
 		milestone.MilestoneName= milestoneName
+		milestone.MilestoneStatus = milestoneStatus
 		milestone.MilestoneDeliverables= milestoneDeliverables
 		milestone.MilestoneDueDate = milestoneDueDate
 		milestone.MilestoneAchievedDate = milestoneAchievedDate
@@ -121,27 +136,4 @@ func UpdateMilestone(milestoneName,milestoneDeliverables,milestoneDueDate,milest
 		return &milestone, nil
 	}
 	return nil, errors.New("an error occurred while updating the milestone")
-}
-
-//CreateMilestoneStatus repo method definition
-func CreateMilestoneStatus(milestoneStatus string)(*models.MilestoneStatus,error)  {
-	var status models.MilestoneStatus
-	status.MilestoneStatus= milestoneStatus
-	result := models.DB.Create(status)
-	if result != nil {
-		return &status,nil
-	}
-	return nil,errors.New("an error occurred while assigning a milestone status")
-}
-
-//UpdateMilestoneStatus repo method definition
-func UpdateMilestoneStatus(milestoneStatus string, id int) (*models.MilestoneStatus,error) {
-	var status models.MilestoneStatus
-	models.DB.Where("id=?",id).Find(&status)
-	if status.ID == id {
-		status.MilestoneStatus= milestoneStatus
-		models.DB.Save(&status)
-		return &status, nil
-	}
-	return nil, errors.New("an error occurred while updating the status of the milestone")
 }

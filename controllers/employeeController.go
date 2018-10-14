@@ -25,12 +25,12 @@ func CreateEmployeeController(w http.ResponseWriter, r *http.Request) {
 			RespondWithError(w, 500, "Invalid employee payload")
 			return
 		}
-		//save a new user
+		//save a new employee
 
 		response, err := repository.CreateEmployee(*user, employee.EmployeeProfession)
 
 		if err != nil {
-			RespondWithError(w, 500, "An unexpected error occured")
+			RespondWithError(w, 500, "An unexpected error occurred")
 		}
 		RespondWithJSON(w, http.StatusCreated, response)
 	}

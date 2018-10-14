@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//SetUserRouter method definition
 func SetUserRouter(router *mux.Router) *mux.Router {
 
 	//Authentication get token
