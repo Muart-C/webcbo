@@ -14,33 +14,33 @@ type User struct {
 	FirstName      string           `gorm:"type:varchar(30)"`
 	LastName       string           `gorm:"type:varchar(30)"`
 	Password       []byte
-	ProjectManager []ProjectManager `gorm:"foreignkey:ProjectManagerUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	Employee       []Employee       `gorm:"foreignkey:EmployeeUserID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	ProjectManager []ProjectManager
+	Employee       []Employee
 }
 
 //Role model
 type Role struct {
 	BaseModel
 	RoleName   string       `gorm:"not null"`
-	Assigned   []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	TeamMember []TeamMember `gorm:"foreignkey:TeamMemberRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Assigned   []Assigned
+	TeamMember []TeamMember
 }
 
 //Team model
 type Team struct {
 	BaseModel
 	TeamName   string       `gorm:"not null"`
-	TeamMember []TeamMember `gorm:"foreignkey:TeamMemberTeamID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	TeamMember []TeamMember
 }
 
 //Employee model
 type Employee struct {
 	BaseModel
-	EmployeeUserID     int
+	EmployeeUserID int
 	EmployeeProfession string       `gorm:"varchar(30)"`
-	Assigned           []Assigned   `gorm:"foreignkey:AssignedRoleID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	TeamMember         []TeamMember `gorm:"foreignkey:TeamMemberEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
-	Hours              Hours        `gorm:"foreignkey:HoursEmployeeID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	Assigned           []Assigned
+	TeamMember         []TeamMember
+	Hours              []Hours
 }
 
 //TeamMember model
@@ -71,13 +71,12 @@ type Client struct {
 	ClientCity           string           `gorm:"type:varchar(128)"`
 	ClientPhone          string           `gorm:"type:varchar(128)"`
 	ClientZip            string           `gorm:"type:varchar(128)"`
-	ProjectManager       []ProjectManager `gorm:"foreignkey:ProjectManagerClientID;association_autoupdate:false;association_autocreate:false;association_save_reference:false"`
+	ProjectManager       []ProjectManager
 }
 
 //ProjectManager model
 type ProjectManager struct {
 	BaseModel
-
 	ProjectManagerUserID    int
 	ProjectManagerProjectID int
 	ProjectManagerClientID  int

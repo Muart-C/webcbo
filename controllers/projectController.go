@@ -18,7 +18,7 @@ func CreateProjectController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//save a project
-	response, err := repository.CreateProject(project.ProjectName, project.ProjectDescription,project.ProjectStatus,project.ProjectIsActive, project.ProjectBudget, project.ProjectMaterialCost, project.ProjectLaborCost, project.ProjectPlannedStartDate, project.ProjectPlannedEndDate, project.ProjectActualStartDate, project.ProjectActualEndDate, project.ProjectTotalHours)
+	response, err := repository.CreateProject(project.ProjectName, project.ProjectDescription,project.ProjectIsActive, project.ProjectBudget, project.ProjectMaterialCost, project.ProjectLaborCost, project.ProjectPlannedStartDate, project.ProjectPlannedEndDate, project.ProjectActualStartDate, project.ProjectActualEndDate,project.ProjectStatus, project.ProjectTotalHours)
 	if err != nil {
 		RespondWithError(w, http.StatusNotImplemented, "could not create a project")
 	}
@@ -58,7 +58,7 @@ func UpdateProjectController(w http.ResponseWriter, r *http.Request)  {
 	params := mux.Vars(r)
 	projectID,err := strconv.Atoi(params["id"])
 	if err == nil {
-		update,err := repository.UpdateProject(project.ProjectName,project.ProjectStatus,project.ProjectDescription,project.ProjectIsActive,project.ProjectBudget,project.ProjectMaterialCost,project.ProjectLaborCost,project.ProjectPlannedStartDate,project.ProjectPlannedEndDate,project.ProjectActualStartDate,project.ProjectActualEndDate,project.ProjectTotalHours, projectID)
+		update,err := repository.UpdateProject(project.ProjectName,project.ProjectDescription,project.ProjectIsActive,project.ProjectBudget,project.ProjectMaterialCost,project.ProjectLaborCost,project.ProjectPlannedStartDate,project.ProjectPlannedEndDate,project.ProjectActualStartDate,project.ProjectActualEndDate,project.ProjectStatus,project.ProjectTotalHours, projectID)
 		if err != nil {
 			RespondWithError(w,http.StatusNotModified,"an error occurred while updating the project ")
 			return

@@ -6,7 +6,7 @@ import (
 )
 
 //CreateProject method definition
-func CreateProject(projectName,projectDescription,projectStatus string,projectIsActive bool,projectBudget,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64) (*models.Project, error) {
+func CreateProject(projectName,projectDescription string,projectIsActive bool,projectBudget,projectMaterialCost,projectLaborCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate,projectStatus string,projectTotalHours float64) (*models.Project, error) {
 	var project models.Project
 	project.ProjectName = projectName
 	project.ProjectDescription = projectDescription
@@ -48,7 +48,7 @@ func FetchProject(id int)(*models.Project,error)  {
 }
 
 //UpdateProject repo method definition
-	func UpdateProject(projectName,projectDescription,projectStatus string,projectIsActive bool, projectBudget,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate string,projectTotalHours float64, id int) (*models.Project, error)  {
+	func UpdateProject(projectName,projectDescription string,projectIsActive bool, projectBudget,projectLaborCost,projectMaterialCost float64,projectPlannedStartDate,projectPlannedEndDate,projectActualStartDate,projectActualEndDate, projectStatus string,projectTotalHours float64, id int) (*models.Project, error)  {
 	var project models.Project
 	models.DB.Where("id = ?",id).Find(&project)
 	if project.ID == id {
