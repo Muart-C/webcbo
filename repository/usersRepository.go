@@ -24,6 +24,7 @@ func CreateUser(userName, email, firstName, lastName string,password []byte ) (*
 //FetchUsers Method definition
 func FetchUsers() (*[]models.User, error) {
 	var users []models.User
+	//models.DB.Table("users").Select("users.email,employees.employee_profession").Joins("left join employees on employees.employee_user_id=users.id").Scan(&users)
 	models.DB.Find(&users)
 	if len(users) > 0 {
 		return &users, nil
@@ -103,7 +104,8 @@ func FetchEmployees() (*[]models.Employee, error) {
 func UpdateEmployee(employeeProfession string, id int) (*models.Employee, error) {
 	var employee models.Employee
 	//employee,err := FetchEmployee(id)
-	models.DB.Where("id=?", id).Find(&employee)
+	models.DB.First(&employee,id)
+	//models.DB.Where("id=?", id).Find(&employee)
 	if employee.ID == id {
 
 		employee.EmployeeProfession = employeeProfession
