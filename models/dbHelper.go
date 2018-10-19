@@ -22,6 +22,7 @@ type Database interface {
 	Delete(value interface{}, where ...interface{}) *gorm.DB
 	First(out interface{}, where ...interface{}) *gorm.DB
 	AutoMigrate(values ...interface{}) *gorm.DB
+	//Model(value interface{}) *gorm.DB
 }
 
 func init() {
