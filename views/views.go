@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Muart-C/alloy/app/services"
 	"github.com/gobuffalo/envy"
 	"github.com/gorilla/csrf"
+	"github.com/Muart-C/webcbo/config"
 )
 
 type View struct {
@@ -28,7 +28,7 @@ func (v *View) Render(w http.ResponseWriter, name string) {
 		return
 	}
 
-	session := services.Session(v.Request)
+	session := config.Session(v.Request)
 	if flashes := session.Flashes(); len(flashes) > 0 {
 		v.Vars["flashes"] = make([]Flash, len(flashes))
 		for i, f := range flashes {

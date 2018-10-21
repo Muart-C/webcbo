@@ -1,0 +1,57 @@
+{{ define "content" }}
+<div class="page-header">
+    <h2>Users</h2>
+</div>
+
+{{ if .Users}}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ range .Users}}
+        <tr>
+            <td>
+                {{ .UserName.String }}
+            </td>
+            <td>
+                {{ .Email.String }}
+            </td>
+            <td>
+                {{ .FirstName.String }}
+            </td>
+            <td>
+                {{ .LastName.String }}
+            </td>
+            <td class="text-left">
+                <a href="/admin/users/{{ .ID }}" class="btn btn-light btn-sm">Show</a>
+                <a href="/admin/users/{{ .ID }}/edit" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/admin/users/{{ .ID }}" data-method="delete" rel="nofollow" data-confirm="Are you sure?" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {{ end }}
+        </tbody>
+    </table>
+</div>
+
+{{ .Pagination }}
+{{ else }}
+<div class="jumbotron text-center">
+    <p class="text-muted lead">
+        No users added yet.
+    </p>
+    <p>
+        <a href="/admin/users/new">Add new user</a>
+    </p>
+</div>
+{{ end }}
+
+
+{{ end }}

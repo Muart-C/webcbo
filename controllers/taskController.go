@@ -10,31 +10,31 @@ import (
 )
 
 //CreateTaskController controller definition
-func CreateTaskController(w http.ResponseWriter, r *http.Request)  {
+func CreateTaskController(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	params := mux.Vars(r)
-	projectID,err := strconv.Atoi(params["id"])
+	projectID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		project,err := repository.FetchProject(projectID)
+		project, err := repository.FetchProject(projectID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotFound,"such project does not exist please create project first then add tasks to it")
+			RespondWithError(w, http.StatusNotFound, "such project does not exist please create project first then add tasks to it")
 			return
 		}
 		er := json.NewDecoder(r.Body).Decode(&task)
 		if er != nil {
-			RespondWithError(w,http.StatusBadRequest,"Could not decode the task json")
+			RespondWithError(w, http.StatusBadRequest, "Could not decode the task json")
 		}
 		//save a task
-		response, err := repository.CreateTask(*project,task.TaskName,task.TaskStatus,task.TaskInstructions,task.TaskPriority,task.TaskTotalHours,task.TaskPlannedBudget,task.TaskActualBudget,task.TaskPlannedStartDate,task.TaskActualStartDate,task.TaskPlannedEndDate,task.TaskActualEndDate)
+		response, err := repository.CreateTask(*project, task.TaskName, task.TaskStatus, task.TaskInstructions, task.TaskPriority, task.TaskTotalHours, task.TaskPlannedBudget, task.TaskActualBudget, task.TaskPlannedStartDate, task.TaskActualStartDate, task.TaskPlannedEndDate, task.TaskActualEndDate)
 		if err != nil {
-			RespondWithError(w,http.StatusNotImplemented,"could not create a task")
+			RespondWithError(w, http.StatusNotImplemented, "could not create a task")
 		}
-		RespondWithJSON(w,http.StatusCreated,response)
+		RespondWithJSON(w, http.StatusCreated, response)
 	}
 }
 
 //GetTasksInProjectController controller definition
-func GetTasksInProjectController(w http.ResponseWriter, r *http.Request){
+func GetTasksInProjectController(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	projectID, err := strconv.Atoi(params["id"])
 	if err == nil {
@@ -49,12 +49,12 @@ func GetTasksInProjectController(w http.ResponseWriter, r *http.Request){
 }
 
 //GetTasksController controller definition
-func GetTasksController(w http.ResponseWriter, r *http.Request){
+func GetTasksController(w http.ResponseWriter, r *http.Request) {
 	tasks, err := repository.FetchTasks()
 	if err != nil {
-		RespondWithError(w,http.StatusNotFound,"error retrieving the tasks")
+		RespondWithError(w, http.StatusNotFound, "error retrieving the tasks")
 	}
-	RespondWithJSON(w,http.StatusFound,tasks)
+	RespondWithJSON(w, http.StatusFound, tasks)
 }
 
 //GetTaskController controller definition
@@ -72,31 +72,30 @@ func GetTaskController(w http.ResponseWriter, r *http.Request) {
 }
 
 //UpdateTaskController controller definition
-func UpdateTaskController(w http.ResponseWriter, r *http.Request)  {
+func UpdateTaskController(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	err := json.NewDecoder(r.Body).Decode(&task)
 	if err != nil {
-		RespondWithError(w,http.StatusInternalServerError,"error decoding the project struct")
+		RespondWithError(w, http.StatusInternalServerError, "error decoding the project struct")
 	}
 	params := mux.Vars(r)
-	taskID,err := strconv.Atoi(params["id"])
+	taskID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		update,err := repository.UpdateTask(task.TaskName,task.TaskStatus,task.TaskInstructions,task.TaskPriority,task.TaskTotalHours,task.TaskPlannedBudget,task.TaskActualBudget,task.TaskPlannedStartDate,task.TaskActualStartDate,task.TaskPlannedEndDate,task.TaskActualEndDate, taskID)
+		update, err := repository.UpdateTask(task.TaskName, task.TaskStatus, task.TaskInstructions, task.TaskPriority, task.TaskTotalHours, task.TaskPlannedBudget, task.TaskActualBudget, task.TaskPlannedStartDate, task.TaskActualStartDate, task.TaskPlannedEndDate, task.TaskActualEndDate, taskID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotModified,"an error occurred while updating the task")
+			RespondWithError(w, http.StatusNotModified, "an error occurred while updating the task")
 			return
 		}
-		RespondWithJSON(w,http.StatusCreated,update)
+		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }
-
 
 //CreateActivityController controller definition
 func CreateActivityController(w http.ResponseWriter, r *http.Request) {
 	var activity models.Activity
 
 	params := mux.Vars(r)
-	taskID,err := strconv.Atoi(params["id"])
+	taskID, err := strconv.Atoi(params["id"])
 	if err == nil {
 		task, err := repository.FetchTask(taskID)
 		if err != nil {
@@ -117,7 +116,7 @@ func CreateActivityController(w http.ResponseWriter, r *http.Request) {
 }
 
 //GetActivitiesInTaskController controller definition
-func GetActivitiesInTaskController(w http.ResponseWriter, r *http.Request){
+func GetActivitiesInTaskController(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	taskID, err := strconv.Atoi(params["id"])
 	if err == nil {
@@ -130,6 +129,7 @@ func GetActivitiesInTaskController(w http.ResponseWriter, r *http.Request){
 	}
 
 }
+
 //GetActivityController controller definition
 func GetActivityController(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -143,21 +143,22 @@ func GetActivityController(w http.ResponseWriter, r *http.Request) {
 		RespondWithJSON(w, http.StatusFound, milestone)
 	}
 }
+
 //UpdateActivityController controller definition
-func UpdateActivityController(w http.ResponseWriter, r *http.Request)  {
+func UpdateActivityController(w http.ResponseWriter, r *http.Request) {
 	var activity models.Activity
 	err := json.NewDecoder(r.Body).Decode(&activity)
 	if err != nil {
-		RespondWithError(w,http.StatusInternalServerError,"error decoding the activity struct")
+		RespondWithError(w, http.StatusInternalServerError, "error decoding the activity struct")
 	}
 	params := mux.Vars(r)
-	activityID,err := strconv.Atoi(params["id"])
+	activityID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		update,err := repository.UpdateActivity(activity.ActivityName,activity.ActivityStatus,activity.ActivityPlannedBudget,activity.ActivityActualBudget,activity.ActivityPlannedStartDate,activity.ActivityPlannedEndDate,activity.ActivityActualStartDate,activity.ActivityActualEndDate, activityID)
+		update, err := repository.UpdateActivity(activity.ActivityName, activity.ActivityStatus, activity.ActivityPlannedBudget, activity.ActivityActualBudget, activity.ActivityPlannedStartDate, activity.ActivityPlannedEndDate, activity.ActivityActualStartDate, activity.ActivityActualEndDate, activityID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotModified,"an error occurred while updating the activity")
+			RespondWithError(w, http.StatusNotModified, "an error occurred while updating the activity")
 			return
 		}
-		RespondWithJSON(w,http.StatusCreated,update)
+		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }

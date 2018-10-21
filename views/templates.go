@@ -2,14 +2,14 @@ package views
 
 import (
 	"fmt"
+	"github.com/gobuffalo/envy"
+	"github.com/microcosm-cc/bluemonday"
 	"html/template"
+	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"time"
-
-	"github.com/gobuffalo/envy"
-	"github.com/microcosm-cc/bluemonday"
 )
 
 var templates map[string]*template.Template
@@ -26,54 +26,34 @@ var funcs = template.FuncMap{
 func LoadTemplates() {
 	defaults := []string{"layouts/application.html", "shared/header.html", "shared/footer.html"}
 	admin := []string{"layouts/admin.html", "admin/shared/header.html", "admin/shared/footer.html"}
-	mailer := []string{"mailer/layouts/transactional.html", "mailer/shared/button.html", "mailer/shared/unsubscribe.html", "mailer/shared/footer.html"}
+	//mailer := []string{"mailer/layouts/transactional.html", "mailer/shared/button.html", "mailer/shared/unsubscribe.html", "mailer/shared/footer.html"}
 
 	templates = map[string]*template.Template{
 		"404":                                  newTemplate("layouts/application.html", "errors/404.html"),
 		"500":                                  newTemplate("layouts/application.html", "errors/500.html"),
 		"401":                                  newTemplate("layouts/application.html", "errors/401.html"),
 		"home":                                 newTemplate(append(defaults, "static-pages/home.html")...),
-		"pages/show-full":                      newTemplate(append(defaults, "pages/show-full.html")...),
-		"pages/show-two-col":                   newTemplate(append(defaults, "pages/show-two-col.html")...),
-		"support-messages/new":                 newTemplate(append(defaults, "support-messages/new.html")...),
 		"admin/sessions/new":                   newTemplate("layouts/admin.html", "admin/sessions/new.html"),
 		"admin/dashboard/index":                newTemplate(append(admin, "admin/dashboard/index.html")...),
 		"admin/support-messages/index":         newTemplate(append(admin, "admin/support-messages/index.html")...),
-		"admin/projects/index":                 newTemplate(append(admin, "admin/projects/index.html")...),
-		"admin/projects/show":                  newTemplate(append(admin, "admin/projects/show.html")...),
-		"admin/projects/edit":                  newTemplate(append(admin, "admin/projects/_form.html", "admin/projects/edit.html")...),
-		"admin/projects/new":                   newTemplate(append(admin, "admin/projects/_form.html", "admin/projects/new.html")...),
-		"admin/tasks/index":                    newTemplate(append(admin, "admin/tasks/index.html")...),
-		"admin/tasks/show":                     newTemplate(append(admin, "admin/tasks/show.html")...),
-		"admin/tasks/edit":                     newTemplate(append(admin, "admin/tasks/_form.html", "admin/pages/edit.html")...),
-		"admin/tasks/new":                      newTemplate(append(admin, "admin/tasks/_form.html", "admin/pages/new.html")...),
-		"admin/activities/index":               newTemplate(append(admin, "admin/activities/index.html")...),
-		"admin/activities/show":                newTemplate(append(admin, "admin/activities/show.html")...),
-		"admin/activities/edit":                newTemplate(append(admin, "admin/activities/_form.html", "admin/activities/edit.html")...),
-		"admin/activities/new":                 newTemplate(append(admin, "admin/activities/_form.html", "admin/activities/new.html")...),
+		"admin/projects/index":                    newTemplate(append(admin, "admin/projects/index.html")...),
+		"admin/projects/show":                     newTemplate(append(admin, "admin/projects/show.html")...),
+		"admin/projects/edit":                     newTemplate(append(admin, "admin/projects/_form.html", "admin/projects/edit.html")...),
+		"admin/projects/new":                      newTemplate(append(admin, "admin/projects/_form.html", "admin/projects/new.html")...),
 		"admin/users/index":                    newTemplate(append(admin, "admin/users/index.html")...),
 		"admin/users/show":                     newTemplate(append(admin, "admin/users/show.html")...),
 		"admin/users/edit":                     newTemplate(append(admin, "admin/users/_form.html", "admin/users/edit.html")...),
 		"admin/users/new":                      newTemplate(append(admin, "admin/users/_form.html", "admin/users/new.html")...),
-		"admin/employees/index":                newTemplate(append(admin, "admin/employees/index.html")...),
-		"admin/employees/show":                 newTemplate(append(admin, "admin/employees/show.html")...),
-		"admin/employees/edit":                 newTemplate(append(admin, "admin/employees/_form.html", "admin/employees/edit.html")...),
-		"admin/employees/new":                  newTemplate(append(admin, "admin/employees/_form.html", "admin/employees/new.html")...),
-		"admin/clients/index":                  newTemplate(append(admin, "admin/clients/index.html")...),
-		"admin/clients/show":                   newTemplate(append(admin, "admin/clients/show.html")...),
-		"admin/clients/edit":                   newTemplate(append(admin, "admin/clients/_form.html", "admin/clients/edit.html")...),
-		"admin/clients/new":                    newTemplate(append(admin, "admin/clients/_form.html", "admin/clients/new.html")...),
-		"mailer/support-messages/new":          newTemplate(append(mailer, "mailer/support-messages/new.html")...),
-		"mailer/support-messages/notification": newTemplate(append(mailer, "mailer/support-messages/notification.html")...),
+		//"mailer/support-messages/new":          newTemplate(append(mailer, "mailer/support-messages/new.html")...),
+		//"mailer/support-messages/notification": newTemplate(append(mailer, "mailer/support-messages/notification.html")...),
 	}
 }
 
 func newTemplate(files ...string) *template.Template {
 	f := []string{}
-	cwd := envy.Get("TEMPLATES_DIR", "templates")
 
 	for _, file := range files {
-		f = append(f, filepath.Join(cwd, file))
+		f = append(f, filepath.Join(os.Getenv("TMP_DIR"), file))
 	}
 
 	return template.Must(template.New("*").Funcs(funcs).ParseFiles(f...))

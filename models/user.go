@@ -13,9 +13,9 @@ type User struct {
 	Email          string           `gorm:"unique; not null"`
 	FirstName      string           `gorm:"type:varchar(30)"`
 	LastName       string           `gorm:"type:varchar(30)"`
-	Password       []byte
-	ProjectManager []ProjectManager
-	Employee       []Employee
+	Password       string
+	//ProjectManager []ProjectManager
+	//Employee       []Employee
 }
 
 //Role model

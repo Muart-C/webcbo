@@ -35,11 +35,9 @@ var (
 				{{ else }}
 					<li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
 				{{ end }}
-
 				<li class="page-item disabled">
       				<a href="#" class="page-link">{{ .Page }} / {{ .NumPages }}</a>
     			</li>
-
 				{{ if .HasNext }}
 					<li class="page-item"><a class="page-link" href="{{.NextPageURL}}">Next <span aria-hidden="true">&rarr;</span></a></li>
 				{{ else }}
@@ -53,7 +51,7 @@ var (
 
 func NewPaginator(page, perPage int, url *url.URL) (*Paginator, error) {
 	if page < 1 {
-		return nil, errors.New("invalid page number")
+		return nil, errors.New("Invalid page number")
 	}
 
 	p := &Paginator{

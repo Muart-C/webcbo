@@ -1,18 +1,21 @@
 package main
 
 import (
-	"fmt"
 
+	"github.com/Muart-C/webcbo/models"
 	"github.com/Muart-C/webcbo/routes"
-	"net/http"
+	"github.com/Muart-C/webcbo/views"
+
 )
 
 func main() {
+	// Connect to database
+	db := models.Connect()
+	defer db.Close()
 
-	router := routes.InitializeRoutes()
+	// Setup templates
+	views.LoadTemplates()
 
-	fmt.Println("server is running")
-	http.ListenAndServe(":8000",router)
-
-
+	// Get started
+	routes.ServeRouter()
 }

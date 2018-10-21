@@ -2,13 +2,14 @@ package views
 
 import (
 	"encoding/gob"
-	"github.com/Muart-C/webcbo/config"
 	"net/http"
+
+	"github.com/Muart-C/webcbo/config"
 )
 
 var (
-	FlashInfo = "alert-info"
-	//FlashWarning = "alert-warning"
+	FlashInfo    = "alert-info"
+	FlashWarning = "alert-warning"
 	FlashSuccess = "alert-success"
 	FlashError   = "alert-danger"
 )

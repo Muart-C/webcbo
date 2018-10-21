@@ -18,7 +18,7 @@ func CreateProjectController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//save a project
-	response, err := repository.CreateProject(project.ProjectName, project.ProjectDescription,project.ProjectIsActive, project.ProjectBudget, project.ProjectMaterialCost, project.ProjectLaborCost, project.ProjectPlannedStartDate, project.ProjectPlannedEndDate, project.ProjectActualStartDate, project.ProjectActualEndDate,project.ProjectStatus, project.ProjectTotalHours)
+	response, err := repository.CreateProject(project.ProjectName, project.ProjectDescription, project.ProjectIsActive, project.ProjectBudget, project.ProjectMaterialCost, project.ProjectLaborCost, project.ProjectPlannedStartDate, project.ProjectPlannedEndDate, project.ProjectActualStartDate, project.ProjectActualEndDate, project.ProjectStatus, project.ProjectTotalHours)
 	if err != nil {
 		RespondWithError(w, http.StatusNotImplemented, "could not create a project")
 	}
@@ -26,12 +26,12 @@ func CreateProjectController(w http.ResponseWriter, r *http.Request) {
 }
 
 //GetProjectsController controller definition
-func GetProjectsController(w http.ResponseWriter, r *http.Request){
+func GetProjectsController(w http.ResponseWriter, r *http.Request) {
 	projects, err := repository.FetchProjects()
 	if err != nil {
-		RespondWithError(w,http.StatusNotFound,"error retrieving the projects")
+		RespondWithError(w, http.StatusNotFound, "error retrieving the projects")
 	}
-	RespondWithJSON(w,http.StatusFound,projects)
+	RespondWithJSON(w, http.StatusFound, projects)
 }
 
 //GetProjectController controller definition
@@ -49,24 +49,23 @@ func GetProjectController(w http.ResponseWriter, r *http.Request) {
 }
 
 //UpdateProjectController controller definition
-func UpdateProjectController(w http.ResponseWriter, r *http.Request)  {
+func UpdateProjectController(w http.ResponseWriter, r *http.Request) {
 	var project models.Project
 	err := json.NewDecoder(r.Body).Decode(&project)
 	if err != nil {
-		RespondWithError(w,http.StatusInternalServerError,"error decoding the project struct")
+		RespondWithError(w, http.StatusInternalServerError, "error decoding the project struct")
 	}
 	params := mux.Vars(r)
-	projectID,err := strconv.Atoi(params["id"])
+	projectID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		update,err := repository.UpdateProject(project.ProjectName,project.ProjectDescription,project.ProjectIsActive,project.ProjectBudget,project.ProjectMaterialCost,project.ProjectLaborCost,project.ProjectPlannedStartDate,project.ProjectPlannedEndDate,project.ProjectActualStartDate,project.ProjectActualEndDate,project.ProjectStatus,project.ProjectTotalHours, projectID)
+		update, err := repository.UpdateProject(project.ProjectName, project.ProjectDescription, project.ProjectIsActive, project.ProjectBudget, project.ProjectMaterialCost, project.ProjectLaborCost, project.ProjectPlannedStartDate, project.ProjectPlannedEndDate, project.ProjectActualStartDate, project.ProjectActualEndDate, project.ProjectStatus, project.ProjectTotalHours, projectID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotModified,"an error occurred while updating the project ")
+			RespondWithError(w, http.StatusNotModified, "an error occurred while updating the project ")
 			return
 		}
-		RespondWithJSON(w,http.StatusCreated,update)
+		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }
-
 
 //CreateMilestoneController controller definition
 func CreateMilestoneController(w http.ResponseWriter, r *http.Request) {
@@ -95,24 +94,24 @@ func CreateMilestoneController(w http.ResponseWriter, r *http.Request) {
 }
 
 //GetMilestonesController controller definition
-func GetMilestonesController(w http.ResponseWriter, r *http.Request){
+func GetMilestonesController(w http.ResponseWriter, r *http.Request) {
 	milestones, err := repository.FetchMilestones()
 	if err != nil {
-		RespondWithError(w,http.StatusNotFound,"error retrieving the milestones")
+		RespondWithError(w, http.StatusNotFound, "error retrieving the milestones")
 	}
-	RespondWithJSON(w,http.StatusFound,milestones)
+	RespondWithJSON(w, http.StatusFound, milestones)
 }
 
 //GetMilestonesInProjectController controller definition
-func GetMilestonesInProjectController(w http.ResponseWriter, r *http.Request){
+func GetMilestonesInProjectController(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	projectID,er := strconv.Atoi(params["id"])
+	projectID, er := strconv.Atoi(params["id"])
 	if er == nil {
 		milestones, err := repository.FetchMilestonesInProject(projectID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotFound,"error retrieving the milestones of that particular project")
+			RespondWithError(w, http.StatusNotFound, "error retrieving the milestones of that particular project")
 		}
-		RespondWithJSON(w,http.StatusFound,milestones)
+		RespondWithJSON(w, http.StatusFound, milestones)
 	}
 }
 
@@ -132,20 +131,20 @@ func GetMilestoneController(w http.ResponseWriter, r *http.Request) {
 }
 
 //UpdateMilestoneController controller definition
-func UpdateMilestoneController(w http.ResponseWriter, r *http.Request)  {
+func UpdateMilestoneController(w http.ResponseWriter, r *http.Request) {
 	var milestone models.Milestone
 	err := json.NewDecoder(r.Body).Decode(&milestone)
 	if err != nil {
-		RespondWithError(w,http.StatusInternalServerError,"error decoding the milestone struct")
+		RespondWithError(w, http.StatusInternalServerError, "error decoding the milestone struct")
 	}
 	params := mux.Vars(r)
-	milestoneID,err := strconv.Atoi(params["id"])
+	milestoneID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		update,err := repository.UpdateMilestone(milestone.MilestoneName,milestone.MilestoneStatus,milestone.MilestoneDeliverables,milestone.MilestoneDueDate,milestone.MilestoneAchievedDate,milestone.MilestoneTotalHours, milestoneID)
+		update, err := repository.UpdateMilestone(milestone.MilestoneName, milestone.MilestoneStatus, milestone.MilestoneDeliverables, milestone.MilestoneDueDate, milestone.MilestoneAchievedDate, milestone.MilestoneTotalHours, milestoneID)
 		if err != nil {
-			RespondWithError(w,http.StatusNotModified,"an error occurred while updating the milestone")
+			RespondWithError(w, http.StatusNotModified, "an error occurred while updating the milestone")
 			return
 		}
-		RespondWithJSON(w,http.StatusCreated,update)
+		RespondWithJSON(w, http.StatusCreated, update)
 	}
 }
