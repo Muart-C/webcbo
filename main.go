@@ -1,6 +1,7 @@
 package main
 
 import (
+
 	"encoding/gob"
 	"github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"

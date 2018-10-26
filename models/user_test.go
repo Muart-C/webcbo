@@ -30,4 +30,3 @@ func TestUserCRUD(t *testing.T) {
 		t.Fatalf("Deleting user by id should not fail. Error: %v", err)
 	}
 
-}
